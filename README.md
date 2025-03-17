@@ -14,11 +14,54 @@ This in detail, will extract the `Gateway` IP from the `github_network_*` bridge
 
 ### `strict`
 
-**Description:** Whether to fail the action if a network ip cannot be detected.
+**Description:** Whether to fail the action if a network IP cannot be detected.
 
 | **Type:** | **Required:** | **Default:** |
 | --------- | ------------- | ------------ |
 | Boolean   | No            | false        |
+
+### `forward-ports`
+
+**Description:** If the action should forward from the GitHub Actions Docker network to the host. Note: this will fail if the port is already in use.
+
+| **Type:** | **Required:** | **Default:** |
+| --------- | ------------- | ------------ |
+| Boolean   | No            | false        |
+
+### `host`
+
+**Description:** The host to forward the ports to.
+
+| **Type:** | **Required:** | **Default:** |
+| --------- | ------------- | ------------ |
+| String    | No            | 127.0.0.1    |
+
+## Outputs
+
+### `github-network-ip`
+
+**Description:** The IP address of the GitHub Actions Docker network.
+
+### `port-mappings`
+
+**Description:** The port mapping from the GitHub Actions Docker network to the host, in JSON format.
+
+Example:
+
+```json
+[
+  {
+    "host": {
+      "ip": "127.0.0.1",
+      "port": 5432
+    },
+    "container": {
+      "ip": "172.0.0.1",
+      "port": 80
+    }
+  }
+]
+```
 
 ## Usage
 
