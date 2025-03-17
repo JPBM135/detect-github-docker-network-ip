@@ -25,7 +25,6 @@ export async function discoverPorts(host: string, network: DockerNetwork): Promi
       for (const port of hostPort) {
         core.debug(`Discovered port mapping: ${host}:${port.HostPort} -> ${containerIp}:${containerPortNumber}`);
 
-        console.log(inspectedContainer.NetworkSettings.Ports);
         ports.push({
           host: {
             ip: host,

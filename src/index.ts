@@ -4,6 +4,7 @@ import { inspectNetwork } from './docker/inspectNetwork.js';
 import { queryDockerNetworks } from './docker/queryNetworks.js';
 import { createIpTableRule } from './forward/createIpTableMappings.js';
 import { discoverPorts } from './forward/discoverPorts.js';
+import { ensureIpTablesLegacy } from './forward/ensureIptablesLegacy.js';
 import type { DockerNetwork } from './types.js';
 import { handleError } from './utils/errorHandler.js';
 
@@ -84,6 +85,8 @@ export async function main() {
     core.setOutput('port-mappings', JSON.stringify(discoveredPorts));
 
     core.info('Port mappings set to "port-mappings"');
+
+    await ensureIpTablesLegacy();
 
     core.info('Creating iptables rules for port forwarding...');
 
