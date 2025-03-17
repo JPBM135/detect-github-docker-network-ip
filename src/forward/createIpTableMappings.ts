@@ -5,7 +5,8 @@ import type { PortMapping } from '../types.js';
 export async function createIpTableRule(portMapping: PortMapping) {
   const { host, container } = portMapping;
 
-  const code = await exec.exec('iptables', [
+  const code = await exec.exec('sudo', [
+    'iptables',
     '-t',
     'nat', // Create a rule in the NAT table
     '-A',

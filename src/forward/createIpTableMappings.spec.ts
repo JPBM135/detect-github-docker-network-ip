@@ -28,7 +28,8 @@ describe('createIpTableRule', () => {
   it('should create an iptables rule successfully', async () => {
     mockExec.mockResolvedValue(0);
     await createIpTableRule(mockPortMapping);
-    expect(mockExec).toHaveBeenCalledWith('iptables', [
+    expect(mockExec).toHaveBeenCalledWith('sudo', [
+      'iptables',
       '-t',
       'nat',
       '-A',
