@@ -19796,7 +19796,7 @@ async function inspectContainer(containerId) {
 // src/forward/discoverPorts.ts
 async function discoverPorts(host, network) {
   const ports = [];
-  for (const containerId of Object.keys(network.containers)) {
+  for (const containerId of Object.keys(network.Containers)) {
     const inspectedContainer = await inspectContainer(containerId);
     if (!inspectedContainer) {
       continue;
