@@ -1,6 +1,6 @@
 {
   "name": "@jpbm135/detect-github-docker-network",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Detects the network of a GitHub Docker container",
   "main": "dist/index.mjs",
   "scripts": {
@@ -8,8 +8,8 @@
     "build:check": "tsc --noEmit",
     "build:esbuild": "esbuild ./src --bundle --format=esm --sourcemap --platform=node --target=esnext --outfile=./dist/index.mjs --banner:js='import { createRequire } from \"module\"; const require = createRequire(import.meta.url);'",
     "build": "yarn build:clean && yarn build:check && yarn build:esbuild",
-    "lint": "TIMING=1 DEBUG=eslint:eslint eslint && prettier --check ./src ./test",
-    "lint:fix": "DEBUG=eslint:eslint eslint --fix && prettier --write ./src ./test",
+    "lint": "TIMING=1 DEBUG=eslint:eslint eslint && prettier --check ./src",
+    "lint:fix": "DEBUG=eslint:eslint eslint --fix && prettier --write ./src",
     "start": "env-cmd node --enable-source-maps dist/index.js",
     "start:dev": "yarn build && yarn dev",
     "dev": "env-cmd node --enable-source-maps dist/index.js",
