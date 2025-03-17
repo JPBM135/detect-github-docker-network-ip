@@ -5,25 +5,26 @@ import type { PortMapping } from '../types.js';
 export async function createIpTableRule(portMapping: PortMapping) {
   const { host, container } = portMapping;
 
-  const code = await exec.exec('nft', [
-    'add',
-    'rule',
-    'ip',
-    'nat', // Add the rule to the NAT table
-    'PREROUTING', // Add the rule to the PREROUTING chain (packets are processed before a routing decision)
-    'tcp',
-    'daddr',
-    host.ip, // With a destination address of the host IP
-    'dport',
-    String(host.port), // And a destination port of the host port
-    'dnat',
-    'to',
-    `${container.ip}:${container.port}`, // Redirect the packet to the container IP and port
+  const code = await exec.exec('iptables', [
+    '-t',
+    'nat', // Create a rule in the NAT table
+    '-A',
+    'PREROUTING', // Append the rule to the PREROUTING chain
+    '-p',
+    'tcp', // Match TCP packets
+    '-d',
+    host.ip, // Destination IP address
+    '--dport',
+    String(host.port), // Destination port
+    '-j',
+    'DNAT', // Destination NAT
+    '--to-destination',
+    `${container.ip}:${container.port}`, // New destination IP and port
   ]);
 
   if (code !== 0) {
-    throw new Error(`Failed to create nftables rule: ${host.ip}:${host.port} -> ${container.ip}:${container.port}`);
+    throw new Error(`Failed to create iptables rule: ${host.ip}:${host.port} -> ${container.ip}:${container.port}`);
   }
 
-  core.debug(`Created nftables rule: ${host.ip}:${host.port} -> ${container.ip}:${container.port}`);
+  core.debug(`Created iptables rule: ${host.ip}:${host.port} -> ${container.ip}:${container.port}`);
 }

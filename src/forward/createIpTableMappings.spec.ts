@@ -25,33 +25,34 @@ describe('createIpTableRule', () => {
     vi.clearAllMocks();
   });
 
-  it('should create an nftables rule successfully', async () => {
+  it('should create an iptables rule successfully', async () => {
     mockExec.mockResolvedValue(0);
     await createIpTableRule(mockPortMapping);
-    expect(mockExec).toHaveBeenCalledWith('nft', [
-      'add',
-      'rule',
-      'ip',
+    expect(mockExec).toHaveBeenCalledWith('iptables', [
+      '-t',
       'nat',
+      '-A',
       'PREROUTING',
+      '-p',
       'tcp',
-      'daddr',
+      '-d',
       mockPortMapping.host.ip,
-      'dport',
+      '--dport',
       String(mockPortMapping.host.port),
-      'dnat',
-      'to',
+      '-j',
+      'DNAT',
+      '--to-destination',
       `${mockPortMapping.container.ip}:${mockPortMapping.container.port}`,
     ]);
     expect(mockCoreDebug).toHaveBeenCalledWith(
-      `Created nftables rule: ${mockPortMapping.host.ip}:${mockPortMapping.host.port} -> ${mockPortMapping.container.ip}:${mockPortMapping.container.port}`,
+      `Created iptables rule: ${mockPortMapping.host.ip}:${mockPortMapping.host.port} -> ${mockPortMapping.container.ip}:${mockPortMapping.container.port}`,
     );
   });
 
-  it('should throw an error if the nftables command fails', async () => {
+  it('should throw an error if the iptables command fails', async () => {
     mockExec.mockResolvedValue(1);
     await expect(createIpTableRule(mockPortMapping)).rejects.toThrow(
-      `Failed to create nftables rule: ${mockPortMapping.host.ip}:${mockPortMapping.host.port} -> ${mockPortMapping.container.ip}:${mockPortMapping.container.port}`,
+      `Failed to create iptables rule: ${mockPortMapping.host.ip}:${mockPortMapping.host.port} -> ${mockPortMapping.container.ip}:${mockPortMapping.container.port}`,
     );
   });
 });
