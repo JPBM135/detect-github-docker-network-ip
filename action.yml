@@ -1,0 +1,20 @@
+name: 'Detect GitHub Actions Docker Network IP'
+description: 'Retrieves the IP address of a GitHub Actions Docker network, useful for connecting services when localhost is not sufficient.'
+icon: 'cloud-lightning'
+color: 'gray-dark'
+author: 'github.com/JPBM135'
+
+input:
+  strict:
+    description: 'If the action should fail if the IP address cannot be found'
+    required: false
+    default: false
+    type: boolean
+
+outputs:
+  github-network-ip:
+    description: 'The IP address of the GitHub Actions Docker network'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.mjs'

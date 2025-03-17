@@ -1,0 +1,57 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+          ref: ${{ github.ref }}
+
+      - name: Get commits and create release
+        uses: actions/github-script@v3
+        with:
+          script: |
+            const tags = await github.repos.listTags({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              per_page: 2
+            });
+
+            if (!tags.data.length) {
+              core.setFailed('No tags found');
+              return;
+            }
+
+            const latestTag = tags.data[1].name;
+
+            const commits = await github.repos.compareCommits({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              base: latestTag,
+              head: 'HEAD'
+            });
+
+            const commitsParsed = commits.data.commits.map(commit => `- ${commit.commit.message} (${commit.author.login})`);
+
+            const release = await github.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: context.ref.replace('refs/tags/', ''),
+              name: context.ref.replace('refs/tags/', ''),
+              body: commitsParsed.join('\n')
+            });
+
+            core.setOutput('release_id', release.data.id);
