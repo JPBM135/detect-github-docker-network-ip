@@ -1,6 +1,6 @@
+import * as core from '@actions/core';
 import { inspectContainer } from '../docker/inspectContainer.js';
 import type { DockerNetwork, PortMapping } from '../types.js';
-import * as core from '@actions/core';
 
 export async function discoverPorts(host: string, network: DockerNetwork): Promise<PortMapping[]> {
   const ports: PortMapping[] = [];

@@ -1,8 +1,8 @@
-import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import * as exec from '@actions/exec';
-import { inspectContainer } from './inspectContainer.js';
-import { safeJsonParse } from '../utils/safeJsonParse.js';
+import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import type { DockerContainer } from '../types.js';
+import { safeJsonParse } from '../utils/safeJsonParse.js';
+import { inspectContainer } from './inspectContainer.js';
 
 vi.mock('@actions/exec');
 const mockExec = exec.getExecOutput as Mock;
@@ -17,7 +17,7 @@ const mockInspectOutput = JSON.stringify([
   },
 ]);
 
-const mockDockerContainer: DockerContainer[] = safeJsonParse<DockerContainer[]>(mockInspectOutput) || [];
+const mockDockerContainer: DockerContainer[] = safeJsonParse<DockerContainer[]>(mockInspectOutput) ?? [];
 
 describe('inspectContainer', () => {
   beforeEach(() => {

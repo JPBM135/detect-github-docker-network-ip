@@ -1,5 +1,5 @@
-import * as exec from '@actions/exec';
 import * as core from '@actions/core';
+import * as exec from '@actions/exec';
 import type { PortMapping } from '../types.js';
 
 export async function createIpTableRule(portMapping: PortMapping) {

@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import * as core from '@actions/core';
+import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import { handleError } from './errorHandler.js';
 
 vi.mock('@actions/core');
@@ -17,6 +17,7 @@ describe('handleError', () => {
 
     handleError(error);
 
+    // eslint-disable-next-line @typescript-eslint/no-base-to-string
     expect(mockDebug).toHaveBeenCalledWith(String(error));
     expect(mockSetFailed).toHaveBeenCalledWith('test error');
   });
@@ -26,6 +27,7 @@ describe('handleError', () => {
 
     handleError(error);
 
+    // eslint-disable-next-line @typescript-eslint/no-base-to-string
     expect(mockDebug).toHaveBeenCalledWith(String(error));
     expect(mockSetFailed).toHaveBeenCalledWith(
       'An unexpected error occurred. Please contact the package maintainer if the problem persists.',

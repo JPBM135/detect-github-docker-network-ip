@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import * as exec from '@actions/exec';
+import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import { queryDockerNetworks } from './queryNetworks.js';
 
 vi.mock('@actions/exec');

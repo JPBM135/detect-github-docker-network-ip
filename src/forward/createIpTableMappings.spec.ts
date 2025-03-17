@@ -1,8 +1,8 @@
-import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
-import * as exec from '@actions/exec';
 import * as core from '@actions/core';
-import { createIpTableRule } from './createIpTableMappings.js';
+import * as exec from '@actions/exec';
+import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import type { PortMapping } from '../types.js';
+import { createIpTableRule } from './createIpTableMappings.js';
 
 vi.mock('@actions/exec');
 vi.mock('@actions/core');
@@ -12,11 +12,11 @@ const mockCoreDebug = core.debug as Mock;
 const mockPortMapping: PortMapping = {
   host: {
     ip: 'localhost',
-    port: 9090,
+    port: 9_090,
   },
   container: {
     ip: '192.168.1.1',
-    port: 8080,
+    port: 8_080,
   },
 };
 

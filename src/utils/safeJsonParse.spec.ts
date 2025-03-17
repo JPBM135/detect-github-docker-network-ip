@@ -4,13 +4,13 @@ import { safeJsonParse } from './safeJsonParse.js';
 describe('safeJsonParse', () => {
   it('should parse valid JSON string', () => {
     const jsonString = '{"name": "John", "age": 30}';
-    const result = safeJsonParse<{ name: string; age: number }>(jsonString);
+    const result = safeJsonParse<{ age: number; name: string }>(jsonString);
     expect(result).toEqual({ name: 'John', age: 30 });
   });
 
   it('should return null for invalid JSON string', () => {
     const jsonString = '{"name": "John", "age": 30';
-    const result = safeJsonParse<{ name: string; age: number }>(jsonString);
+    const result = safeJsonParse<{ age: number; name: string }>(jsonString);
     expect(result).toBeNull();
   });
 
@@ -28,7 +28,7 @@ describe('safeJsonParse', () => {
 
   it('should parse JSON string with nested objects', () => {
     const jsonString = '{"user": {"name": "John", "age": 30}}';
-    const result = safeJsonParse<{ user: { name: string; age: number } }>(jsonString);
+    const result = safeJsonParse<{ user: { age: number; name: string } }>(jsonString);
     expect(result).toEqual({ user: { name: 'John', age: 30 } });
   });
 

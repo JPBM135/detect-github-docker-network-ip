@@ -1,14 +1,13 @@
-import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import * as core from '@actions/core';
+import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import { inspectContainer } from '../docker/inspectContainer.js';
-import { discoverPorts } from './discoverPorts.js';
 import type { DockerNetwork, PortMapping } from '../types.js';
+import { discoverPorts } from './discoverPorts.js';
 
 vi.mock('@actions/core');
 vi.mock('../docker/inspectContainer.js');
 const mockInspectContainer = inspectContainer as Mock;
 const mockCoreWarning = core.warning as Mock;
-const mockCoreDebug = core.debug as Mock;
 
 const mockNetwork: DockerNetwork = {
   Name: 'github_network',
@@ -46,11 +45,11 @@ describe('discoverPorts', () => {
       {
         host: {
           ip: 'localhost',
-          port: 9090,
+          port: 9_090,
         },
         container: {
           ip: '192.168.1.1',
-          port: 8080,
+          port: 8_080,
         },
       },
     ];

@@ -1,10 +1,10 @@
 export interface DockerNetwork {
-  Name: string;
   IPAM: {
     Config: {
       Gateway: string;
     }[];
   };
+  Name: string;
   containers: {
     [key: string]: {
       Name: string;
@@ -27,11 +27,11 @@ export interface DockerContainer {
 }
 
 export interface PortMapping {
-  host: {
+  container: {
     ip: string;
     port: number;
   };
-  container: {
+  host: {
     ip: string;
     port: number;
   };

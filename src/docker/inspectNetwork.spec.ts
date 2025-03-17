@@ -1,8 +1,8 @@
-import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import * as exec from '@actions/exec';
-import { inspectNetwork } from './inspectNetwork.js';
-import { safeJsonParse } from '../utils/safeJsonParse.js';
+import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import type { DockerNetwork } from '../types.js';
+import { safeJsonParse } from '../utils/safeJsonParse.js';
+import { inspectNetwork } from './inspectNetwork.js';
 
 vi.mock('@actions/exec');
 
@@ -21,7 +21,7 @@ const mockInspectOutput = JSON.stringify([
   },
 ]);
 
-const mockDockerNetwork: DockerNetwork[] = safeJsonParse<DockerNetwork[]>(mockInspectOutput) || [];
+const mockDockerNetwork: DockerNetwork[] = safeJsonParse<DockerNetwork[]>(mockInspectOutput) ?? [];
 
 describe('inspectNetwork', () => {
   beforeEach(() => {

@@ -1,6 +1,6 @@
-import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import * as core from '@actions/core';
 import * as exec from '@actions/exec';
+import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import { main } from './index.js';
 
 vi.mock('@actions/core');
@@ -60,7 +60,8 @@ describe('main', () => {
   it('should fail in strict mode when GitHub Actions network is not found', async () => {
     mockGetBooleanInput.mockReturnValue(true);
     mockGetExecOutput.mockResolvedValueOnce({ exitCode: 0, stdout: 'network1\nnetwork2', stderr: '' });
-    for (const _ of Array(2)) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    for (const _ of Array.from({ length: 2 })) {
       mockGetExecOutput.mockResolvedValueOnce({
         exitCode: 0,
         stdout: JSON.stringify([
@@ -87,7 +88,8 @@ describe('main', () => {
   it('should warn when GitHub Actions network is not found and not in strict mode', async () => {
     mockGetBooleanInput.mockReturnValue(false);
     mockGetExecOutput.mockResolvedValueOnce({ exitCode: 0, stdout: 'network1\nnetwork2', stderr: '' });
-    for (const _ of Array(2)) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    for (const _ of Array.from({ length: 2 })) {
       mockGetExecOutput.mockResolvedValueOnce({
         exitCode: 0,
         stdout: JSON.stringify([

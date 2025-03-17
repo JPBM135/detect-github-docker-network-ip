@@ -1,7 +1,7 @@
-import * as exec from '@actions/exec';
 import * as core from '@actions/core';
-import { safeJsonParse } from '../utils/safeJsonParse.js';
+import * as exec from '@actions/exec';
 import type { DockerContainer } from '../types.js';
+import { safeJsonParse } from '../utils/safeJsonParse.js';
 
 export async function inspectContainer(containerId: string) {
   const inspect = await exec.getExecOutput('docker', ['inspect', containerId]);

@@ -1,7 +1,7 @@
+import * as core from '@actions/core';
+import * as exec from '@actions/exec';
 import type { DockerNetwork } from '../types.js';
 import { safeJsonParse } from '../utils/safeJsonParse.js';
-import * as exec from '@actions/exec';
-import * as core from '@actions/core';
 
 export async function inspectNetwork(network: string) {
   const inspect = await exec.getExecOutput('docker', ['network', 'inspect', network]);

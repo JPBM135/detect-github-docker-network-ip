@@ -1,11 +1,11 @@
 import process from 'node:process';
 import * as core from '@actions/core';
-import { handleError } from './utils/errorHandler.js';
-import { queryDockerNetworks } from './docker/queryNetworks.js';
 import { inspectNetwork } from './docker/inspectNetwork.js';
+import { queryDockerNetworks } from './docker/queryNetworks.js';
+import { createIpTableRule } from './forward/createIpTableMappings.js';
 import { discoverPorts } from './forward/discoverPorts.js';
 import type { DockerNetwork } from './types.js';
-import { createIpTableRule } from './forward/createIpTableMappings.js';
+import { handleError } from './utils/errorHandler.js';
 
 export async function main() {
   const STRICT = core.getBooleanInput('strict', { required: false, trimWhitespace: true });
