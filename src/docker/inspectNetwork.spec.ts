@@ -1,14 +1,13 @@
 import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import * as exec from '@actions/exec';
-import { queryDockerNetworks, inspectNetwork } from './dockerUtils.js';
-import { safeJsonParse } from './safeJsonParse.js';
+import { inspectNetwork } from './inspectNetwork.js';
+import { safeJsonParse } from '../utils/safeJsonParse.js';
 import type { DockerNetwork } from '../types.js';
 
 vi.mock('@actions/exec');
 
 const mockExec = exec.getExecOutput as Mock;
 
-const mockNetworks = ['network1', 'network2'];
 const mockInspectOutput = JSON.stringify([
   {
     Name: 'github_network',
@@ -23,33 +22,6 @@ const mockInspectOutput = JSON.stringify([
 ]);
 
 const mockDockerNetwork: DockerNetwork[] = safeJsonParse<DockerNetwork[]>(mockInspectOutput) || [];
-
-describe('queryDockerNetworks', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
-  it('should return a list of Docker networks', async () => {
-    mockExec.mockResolvedValue({
-      exitCode: 0,
-      stdout: mockNetworks.join('\n'),
-      stderr: '',
-    });
-
-    const result = await queryDockerNetworks();
-    expect(result).toEqual(mockNetworks);
-  });
-
-  it('should throw an error if the command fails', async () => {
-    mockExec.mockResolvedValue({
-      exitCode: 1,
-      stdout: '',
-      stderr: 'error',
-    });
-
-    await expect(queryDockerNetworks()).rejects.toThrow('Failed to list all Docker networks: error');
-  });
-});
 
 describe('inspectNetwork', () => {
   beforeEach(() => {

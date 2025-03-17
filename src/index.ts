@@ -1,7 +1,8 @@
 import process from 'node:process';
 import * as core from '@actions/core';
-import { queryDockerNetworks, inspectNetwork } from './utils/dockerUtils.js';
 import { handleError } from './utils/errorHandler.js';
+import { queryDockerNetworks } from './docker/queryNetworks.js';
+import { inspectNetwork } from './docker/inspectNetwork.js';
 
 export async function main() {
   const STRICT = core.getBooleanInput('strict', { required: false, trimWhitespace: true });
@@ -27,8 +28,8 @@ export async function main() {
 
       core.debug(`Network ${network} inspect: ${JSON.stringify(inspectJson, null, 2)}`);
 
-      if (inspectJson[0]?.Name?.startsWith('github')) {
-        githubNetworkIp = inspectJson[0]?.IPAM?.Config?.[0]?.Gateway;
+      if (inspectJson?.Name?.startsWith('github')) {
+        githubNetworkIp = inspectJson?.IPAM?.Config?.[0]?.Gateway;
 
         if (!githubNetworkIp) {
           core.debug(`Failed to get GitHub Actions network IP for network ${network}`);
