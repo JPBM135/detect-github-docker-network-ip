@@ -19742,33 +19742,30 @@ var core2 = __toESM(require_core(), 1);
 var exec3 = __toESM(require_exec(), 1);
 async function createIpTableRule(portMapping) {
   const { host, container } = portMapping;
-  const code = await exec3.exec("iptables", [
-    "-t",
+  const code = await exec3.exec("nft", [
+    "add",
+    "rule",
+    "ip",
     "nat",
-    // Create a rule in the NAT table
-    "-A",
+    // Add the rule to the NAT table
     "PREROUTING",
-    // Append the rule to the PREROUTING chain
-    "-p",
+    // Add the rule to the PREROUTING chain (packets are processed before a routing decision)
     "tcp",
-    // Match TCP packets
-    "-d",
+    "daddr",
     host.ip,
-    // Destination IP address
-    "--dport",
+    // With a destination address of the host IP
+    "dport",
     String(host.port),
-    // Destination port
-    "-j",
-    "DNAT",
-    // Destination NAT
-    "--to-destination",
+    // And a destination port of the host port
+    "dnat",
+    "to",
     `${container.ip}:${container.port}`
-    // New destination IP and port
+    // Redirect the packet to the container IP and port
   ]);
   if (code !== 0) {
-    throw new Error(`Failed to create iptables rule: ${host.ip}:${host.port} -> ${container.ip}:${container.port}`);
+    throw new Error(`Failed to create nftables rule: ${host.ip}:${host.port} -> ${container.ip}:${container.port}`);
   }
-  core2.debug(`Created iptables rule: ${host.ip}:${host.port} -> ${container.ip}:${container.port}`);
+  core2.debug(`Created nftables rule: ${host.ip}:${host.port} -> ${container.ip}:${container.port}`);
 }
 
 // src/forward/discoverPorts.ts
