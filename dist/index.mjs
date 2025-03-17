@@ -12,15 +12,8 @@ var __require = /* @__PURE__ */ ((x) => typeof require !== "undefined" ? require
     return require.apply(this, arguments);
   throw Error('Dynamic require of "' + x + '" is not supported');
 });
-var __esm = (fn, res) => function __init() {
-  return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
-};
 var __commonJS = (cb, mod) => function __require2() {
   return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
-};
-var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
   if (from && typeof from === "object" || typeof from === "function") {
@@ -38,7 +31,6 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
 ));
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // node_modules/@actions/core/lib/utils.js
 var require_utils = __commonJS({
@@ -79,9 +71,13 @@ var require_command = __commonJS({
     var __createBinding = exports && exports.__createBinding || (Object.create ? function(o, m, k, k2) {
       if (k2 === void 0)
         k2 = k;
-      Object.defineProperty(o, k2, { enumerable: true, get: function() {
-        return m[k];
-      } });
+      var desc = Object.getOwnPropertyDescriptor(m, k);
+      if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+        desc = { enumerable: true, get: function() {
+          return m[k];
+        } };
+      }
+      Object.defineProperty(o, k2, desc);
     } : function(o, m, k, k2) {
       if (k2 === void 0)
         k2 = k;
@@ -98,7 +94,7 @@ var require_command = __commonJS({
       var result = {};
       if (mod != null) {
         for (var k in mod)
-          if (k !== "default" && Object.hasOwnProperty.call(mod, k))
+          if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k))
             __createBinding(result, mod, k);
       }
       __setModuleDefault(result, mod);
@@ -106,11 +102,11 @@ var require_command = __commonJS({
     };
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.issue = exports.issueCommand = void 0;
-    var os2 = __importStar(__require("os"));
+    var os = __importStar(__require("os"));
     var utils_1 = require_utils();
     function issueCommand(command, properties, message) {
       const cmd = new Command(command, properties, message);
-      process.stdout.write(cmd.toString() + os2.EOL);
+      process.stdout.write(cmd.toString() + os.EOL);
     }
     exports.issueCommand = issueCommand;
     function issue(name, message = "") {
@@ -151,344 +147,11 @@ var require_command = __commonJS({
       }
     };
     function escapeData(s) {
-      return utils_1.toCommandValue(s).replace(/%/g, "%25").replace(/\r/g, "%0D").replace(/\n/g, "%0A");
+      return (0, utils_1.toCommandValue)(s).replace(/%/g, "%25").replace(/\r/g, "%0D").replace(/\n/g, "%0A");
     }
     function escapeProperty(s) {
-      return utils_1.toCommandValue(s).replace(/%/g, "%25").replace(/\r/g, "%0D").replace(/\n/g, "%0A").replace(/:/g, "%3A").replace(/,/g, "%2C");
+      return (0, utils_1.toCommandValue)(s).replace(/%/g, "%25").replace(/\r/g, "%0D").replace(/\n/g, "%0A").replace(/:/g, "%3A").replace(/,/g, "%2C");
     }
-  }
-});
-
-// node_modules/uuid/dist/esm-node/rng.js
-import crypto from "crypto";
-function rng() {
-  if (poolPtr > rnds8Pool.length - 16) {
-    crypto.randomFillSync(rnds8Pool);
-    poolPtr = 0;
-  }
-  return rnds8Pool.slice(poolPtr, poolPtr += 16);
-}
-var rnds8Pool, poolPtr;
-var init_rng = __esm({
-  "node_modules/uuid/dist/esm-node/rng.js"() {
-    rnds8Pool = new Uint8Array(256);
-    poolPtr = rnds8Pool.length;
-  }
-});
-
-// node_modules/uuid/dist/esm-node/regex.js
-var regex_default;
-var init_regex = __esm({
-  "node_modules/uuid/dist/esm-node/regex.js"() {
-    regex_default = /^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i;
-  }
-});
-
-// node_modules/uuid/dist/esm-node/validate.js
-function validate(uuid) {
-  return typeof uuid === "string" && regex_default.test(uuid);
-}
-var validate_default;
-var init_validate = __esm({
-  "node_modules/uuid/dist/esm-node/validate.js"() {
-    init_regex();
-    validate_default = validate;
-  }
-});
-
-// node_modules/uuid/dist/esm-node/stringify.js
-function stringify(arr, offset = 0) {
-  const uuid = (byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + "-" + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + "-" + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + "-" + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + "-" + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]]).toLowerCase();
-  if (!validate_default(uuid)) {
-    throw TypeError("Stringified UUID is invalid");
-  }
-  return uuid;
-}
-var byteToHex, stringify_default;
-var init_stringify = __esm({
-  "node_modules/uuid/dist/esm-node/stringify.js"() {
-    init_validate();
-    byteToHex = [];
-    for (let i = 0; i < 256; ++i) {
-      byteToHex.push((i + 256).toString(16).substr(1));
-    }
-    stringify_default = stringify;
-  }
-});
-
-// node_modules/uuid/dist/esm-node/v1.js
-function v1(options, buf, offset) {
-  let i = buf && offset || 0;
-  const b = buf || new Array(16);
-  options = options || {};
-  let node = options.node || _nodeId;
-  let clockseq = options.clockseq !== void 0 ? options.clockseq : _clockseq;
-  if (node == null || clockseq == null) {
-    const seedBytes = options.random || (options.rng || rng)();
-    if (node == null) {
-      node = _nodeId = [seedBytes[0] | 1, seedBytes[1], seedBytes[2], seedBytes[3], seedBytes[4], seedBytes[5]];
-    }
-    if (clockseq == null) {
-      clockseq = _clockseq = (seedBytes[6] << 8 | seedBytes[7]) & 16383;
-    }
-  }
-  let msecs = options.msecs !== void 0 ? options.msecs : Date.now();
-  let nsecs = options.nsecs !== void 0 ? options.nsecs : _lastNSecs + 1;
-  const dt = msecs - _lastMSecs + (nsecs - _lastNSecs) / 1e4;
-  if (dt < 0 && options.clockseq === void 0) {
-    clockseq = clockseq + 1 & 16383;
-  }
-  if ((dt < 0 || msecs > _lastMSecs) && options.nsecs === void 0) {
-    nsecs = 0;
-  }
-  if (nsecs >= 1e4) {
-    throw new Error("uuid.v1(): Can't create more than 10M uuids/sec");
-  }
-  _lastMSecs = msecs;
-  _lastNSecs = nsecs;
-  _clockseq = clockseq;
-  msecs += 122192928e5;
-  const tl = ((msecs & 268435455) * 1e4 + nsecs) % 4294967296;
-  b[i++] = tl >>> 24 & 255;
-  b[i++] = tl >>> 16 & 255;
-  b[i++] = tl >>> 8 & 255;
-  b[i++] = tl & 255;
-  const tmh = msecs / 4294967296 * 1e4 & 268435455;
-  b[i++] = tmh >>> 8 & 255;
-  b[i++] = tmh & 255;
-  b[i++] = tmh >>> 24 & 15 | 16;
-  b[i++] = tmh >>> 16 & 255;
-  b[i++] = clockseq >>> 8 | 128;
-  b[i++] = clockseq & 255;
-  for (let n = 0; n < 6; ++n) {
-    b[i + n] = node[n];
-  }
-  return buf || stringify_default(b);
-}
-var _nodeId, _clockseq, _lastMSecs, _lastNSecs, v1_default;
-var init_v1 = __esm({
-  "node_modules/uuid/dist/esm-node/v1.js"() {
-    init_rng();
-    init_stringify();
-    _lastMSecs = 0;
-    _lastNSecs = 0;
-    v1_default = v1;
-  }
-});
-
-// node_modules/uuid/dist/esm-node/parse.js
-function parse(uuid) {
-  if (!validate_default(uuid)) {
-    throw TypeError("Invalid UUID");
-  }
-  let v;
-  const arr = new Uint8Array(16);
-  arr[0] = (v = parseInt(uuid.slice(0, 8), 16)) >>> 24;
-  arr[1] = v >>> 16 & 255;
-  arr[2] = v >>> 8 & 255;
-  arr[3] = v & 255;
-  arr[4] = (v = parseInt(uuid.slice(9, 13), 16)) >>> 8;
-  arr[5] = v & 255;
-  arr[6] = (v = parseInt(uuid.slice(14, 18), 16)) >>> 8;
-  arr[7] = v & 255;
-  arr[8] = (v = parseInt(uuid.slice(19, 23), 16)) >>> 8;
-  arr[9] = v & 255;
-  arr[10] = (v = parseInt(uuid.slice(24, 36), 16)) / 1099511627776 & 255;
-  arr[11] = v / 4294967296 & 255;
-  arr[12] = v >>> 24 & 255;
-  arr[13] = v >>> 16 & 255;
-  arr[14] = v >>> 8 & 255;
-  arr[15] = v & 255;
-  return arr;
-}
-var parse_default;
-var init_parse = __esm({
-  "node_modules/uuid/dist/esm-node/parse.js"() {
-    init_validate();
-    parse_default = parse;
-  }
-});
-
-// node_modules/uuid/dist/esm-node/v35.js
-function stringToBytes(str) {
-  str = unescape(encodeURIComponent(str));
-  const bytes = [];
-  for (let i = 0; i < str.length; ++i) {
-    bytes.push(str.charCodeAt(i));
-  }
-  return bytes;
-}
-function v35_default(name, version2, hashfunc) {
-  function generateUUID(value, namespace, buf, offset) {
-    if (typeof value === "string") {
-      value = stringToBytes(value);
-    }
-    if (typeof namespace === "string") {
-      namespace = parse_default(namespace);
-    }
-    if (namespace.length !== 16) {
-      throw TypeError("Namespace must be array-like (16 iterable integer values, 0-255)");
-    }
-    let bytes = new Uint8Array(16 + value.length);
-    bytes.set(namespace);
-    bytes.set(value, namespace.length);
-    bytes = hashfunc(bytes);
-    bytes[6] = bytes[6] & 15 | version2;
-    bytes[8] = bytes[8] & 63 | 128;
-    if (buf) {
-      offset = offset || 0;
-      for (let i = 0; i < 16; ++i) {
-        buf[offset + i] = bytes[i];
-      }
-      return buf;
-    }
-    return stringify_default(bytes);
-  }
-  try {
-    generateUUID.name = name;
-  } catch (err) {
-  }
-  generateUUID.DNS = DNS;
-  generateUUID.URL = URL2;
-  return generateUUID;
-}
-var DNS, URL2;
-var init_v35 = __esm({
-  "node_modules/uuid/dist/esm-node/v35.js"() {
-    init_stringify();
-    init_parse();
-    DNS = "6ba7b810-9dad-11d1-80b4-00c04fd430c8";
-    URL2 = "6ba7b811-9dad-11d1-80b4-00c04fd430c8";
-  }
-});
-
-// node_modules/uuid/dist/esm-node/md5.js
-import crypto2 from "crypto";
-function md5(bytes) {
-  if (Array.isArray(bytes)) {
-    bytes = Buffer.from(bytes);
-  } else if (typeof bytes === "string") {
-    bytes = Buffer.from(bytes, "utf8");
-  }
-  return crypto2.createHash("md5").update(bytes).digest();
-}
-var md5_default;
-var init_md5 = __esm({
-  "node_modules/uuid/dist/esm-node/md5.js"() {
-    md5_default = md5;
-  }
-});
-
-// node_modules/uuid/dist/esm-node/v3.js
-var v3, v3_default;
-var init_v3 = __esm({
-  "node_modules/uuid/dist/esm-node/v3.js"() {
-    init_v35();
-    init_md5();
-    v3 = v35_default("v3", 48, md5_default);
-    v3_default = v3;
-  }
-});
-
-// node_modules/uuid/dist/esm-node/v4.js
-function v4(options, buf, offset) {
-  options = options || {};
-  const rnds = options.random || (options.rng || rng)();
-  rnds[6] = rnds[6] & 15 | 64;
-  rnds[8] = rnds[8] & 63 | 128;
-  if (buf) {
-    offset = offset || 0;
-    for (let i = 0; i < 16; ++i) {
-      buf[offset + i] = rnds[i];
-    }
-    return buf;
-  }
-  return stringify_default(rnds);
-}
-var v4_default;
-var init_v4 = __esm({
-  "node_modules/uuid/dist/esm-node/v4.js"() {
-    init_rng();
-    init_stringify();
-    v4_default = v4;
-  }
-});
-
-// node_modules/uuid/dist/esm-node/sha1.js
-import crypto3 from "crypto";
-function sha1(bytes) {
-  if (Array.isArray(bytes)) {
-    bytes = Buffer.from(bytes);
-  } else if (typeof bytes === "string") {
-    bytes = Buffer.from(bytes, "utf8");
-  }
-  return crypto3.createHash("sha1").update(bytes).digest();
-}
-var sha1_default;
-var init_sha1 = __esm({
-  "node_modules/uuid/dist/esm-node/sha1.js"() {
-    sha1_default = sha1;
-  }
-});
-
-// node_modules/uuid/dist/esm-node/v5.js
-var v5, v5_default;
-var init_v5 = __esm({
-  "node_modules/uuid/dist/esm-node/v5.js"() {
-    init_v35();
-    init_sha1();
-    v5 = v35_default("v5", 80, sha1_default);
-    v5_default = v5;
-  }
-});
-
-// node_modules/uuid/dist/esm-node/nil.js
-var nil_default;
-var init_nil = __esm({
-  "node_modules/uuid/dist/esm-node/nil.js"() {
-    nil_default = "00000000-0000-0000-0000-000000000000";
-  }
-});
-
-// node_modules/uuid/dist/esm-node/version.js
-function version(uuid) {
-  if (!validate_default(uuid)) {
-    throw TypeError("Invalid UUID");
-  }
-  return parseInt(uuid.substr(14, 1), 16);
-}
-var version_default;
-var init_version = __esm({
-  "node_modules/uuid/dist/esm-node/version.js"() {
-    init_validate();
-    version_default = version;
-  }
-});
-
-// node_modules/uuid/dist/esm-node/index.js
-var esm_node_exports = {};
-__export(esm_node_exports, {
-  NIL: () => nil_default,
-  parse: () => parse_default,
-  stringify: () => stringify_default,
-  v1: () => v1_default,
-  v3: () => v3_default,
-  v4: () => v4_default,
-  v5: () => v5_default,
-  validate: () => validate_default,
-  version: () => version_default
-});
-var init_esm_node = __esm({
-  "node_modules/uuid/dist/esm-node/index.js"() {
-    init_v1();
-    init_v3();
-    init_v4();
-    init_v5();
-    init_nil();
-    init_version();
-    init_validate();
-    init_stringify();
-    init_parse();
   }
 });
 
@@ -499,9 +162,13 @@ var require_file_command = __commonJS({
     var __createBinding = exports && exports.__createBinding || (Object.create ? function(o, m, k, k2) {
       if (k2 === void 0)
         k2 = k;
-      Object.defineProperty(o, k2, { enumerable: true, get: function() {
-        return m[k];
-      } });
+      var desc = Object.getOwnPropertyDescriptor(m, k);
+      if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+        desc = { enumerable: true, get: function() {
+          return m[k];
+        } };
+      }
+      Object.defineProperty(o, k2, desc);
     } : function(o, m, k, k2) {
       if (k2 === void 0)
         k2 = k;
@@ -518,7 +185,7 @@ var require_file_command = __commonJS({
       var result = {};
       if (mod != null) {
         for (var k in mod)
-          if (k !== "default" && Object.hasOwnProperty.call(mod, k))
+          if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k))
             __createBinding(result, mod, k);
       }
       __setModuleDefault(result, mod);
@@ -526,9 +193,9 @@ var require_file_command = __commonJS({
     };
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.prepareKeyValueMessage = exports.issueFileCommand = void 0;
+    var crypto = __importStar(__require("crypto"));
     var fs = __importStar(__require("fs"));
-    var os2 = __importStar(__require("os"));
-    var uuid_1 = (init_esm_node(), __toCommonJS(esm_node_exports));
+    var os = __importStar(__require("os"));
     var utils_1 = require_utils();
     function issueFileCommand(command, message) {
       const filePath = process.env[`GITHUB_${command}`];
@@ -538,21 +205,21 @@ var require_file_command = __commonJS({
       if (!fs.existsSync(filePath)) {
         throw new Error(`Missing file at path: ${filePath}`);
       }
-      fs.appendFileSync(filePath, `${utils_1.toCommandValue(message)}${os2.EOL}`, {
+      fs.appendFileSync(filePath, `${(0, utils_1.toCommandValue)(message)}${os.EOL}`, {
         encoding: "utf8"
       });
     }
     exports.issueFileCommand = issueFileCommand;
     function prepareKeyValueMessage(key, value) {
-      const delimiter = `ghadelimiter_${uuid_1.v4()}`;
-      const convertedValue = utils_1.toCommandValue(value);
+      const delimiter = `ghadelimiter_${crypto.randomUUID()}`;
+      const convertedValue = (0, utils_1.toCommandValue)(value);
       if (key.includes(delimiter)) {
         throw new Error(`Unexpected input: name should not contain the delimiter "${delimiter}"`);
       }
       if (convertedValue.includes(delimiter)) {
         throw new Error(`Unexpected input: value should not contain the delimiter "${delimiter}"`);
       }
-      return `${key}<<${delimiter}${os2.EOL}${convertedValue}${os2.EOL}${delimiter}`;
+      return `${key}<<${delimiter}${os.EOL}${convertedValue}${os.EOL}${delimiter}`;
     }
     exports.prepareKeyValueMessage = prepareKeyValueMessage;
   }
@@ -730,7 +397,7 @@ var require_tunnel = __commonJS({
         connectOptions.headers = connectOptions.headers || {};
         connectOptions.headers["Proxy-Authorization"] = "Basic " + new Buffer(connectOptions.proxyAuth).toString("base64");
       }
-      debug4("making CONNECT request");
+      debug3("making CONNECT request");
       var connectReq = self.request(connectOptions);
       connectReq.useChunkedEncodingByDefault = false;
       connectReq.once("response", onResponse);
@@ -750,7 +417,7 @@ var require_tunnel = __commonJS({
         connectReq.removeAllListeners();
         socket.removeAllListeners();
         if (res.statusCode !== 200) {
-          debug4(
+          debug3(
             "tunneling socket could not be established, statusCode=%d",
             res.statusCode
           );
@@ -762,7 +429,7 @@ var require_tunnel = __commonJS({
           return;
         }
         if (head.length > 0) {
-          debug4("got illegal response body from proxy");
+          debug3("got illegal response body from proxy");
           socket.destroy();
           var error2 = new Error("got illegal response body from proxy");
           error2.code = "ECONNRESET";
@@ -770,13 +437,13 @@ var require_tunnel = __commonJS({
           self.removeSocket(placeholder);
           return;
         }
-        debug4("tunneling connection has established");
+        debug3("tunneling connection has established");
         self.sockets[self.sockets.indexOf(placeholder)] = socket;
         return cb(socket);
       }
       function onError(cause) {
         connectReq.removeAllListeners();
-        debug4(
+        debug3(
           "tunneling socket could not be established, cause=%s\n",
           cause.message,
           cause.stack
@@ -838,9 +505,9 @@ var require_tunnel = __commonJS({
       }
       return target;
     }
-    var debug4;
+    var debug3;
     if (process.env.NODE_DEBUG && /\btunnel\b/.test(process.env.NODE_DEBUG)) {
-      debug4 = function() {
+      debug3 = function() {
         var args = Array.prototype.slice.call(arguments);
         if (typeof args[0] === "string") {
           args[0] = "TUNNEL: " + args[0];
@@ -850,10 +517,10 @@ var require_tunnel = __commonJS({
         console.error.apply(console, args);
       };
     } else {
-      debug4 = function() {
+      debug3 = function() {
       };
     }
-    exports.debug = debug4;
+    exports.debug = debug3;
   }
 });
 
@@ -1160,7 +827,7 @@ var require_util = __commonJS({
     var { InvalidArgumentError } = require_errors();
     var { Blob: Blob2 } = __require("buffer");
     var nodeUtil = __require("util");
-    var { stringify: stringify2 } = __require("querystring");
+    var { stringify } = __require("querystring");
     var [nodeMajor, nodeMinor] = process.versions.node.split(".").map((v) => Number(v));
     function nop() {
     }
@@ -1174,7 +841,7 @@ var require_util = __commonJS({
       if (url.includes("?") || url.includes("#")) {
         throw new Error('Query params cannot be passed when url already contains "?" or "#".');
       }
-      const stringified = stringify2(queryParams);
+      const stringified = stringify(queryParams);
       if (stringified) {
         url += "?" + stringified;
       }
@@ -3846,9 +3513,9 @@ var require_util2 = __commonJS({
     var { isBlobLike, toUSVString, ReadableStreamFrom } = require_util();
     var assert = __require("assert");
     var { isUint8Array } = __require("util/types");
-    var crypto4;
+    var crypto;
     try {
-      crypto4 = __require("crypto");
+      crypto = __require("crypto");
     } catch {
     }
     function responseURL(response) {
@@ -4114,7 +3781,7 @@ var require_util2 = __commonJS({
       }
     }
     function bytesMatch(bytes, metadataList) {
-      if (crypto4 === void 0) {
+      if (crypto === void 0) {
         return true;
       }
       const parsedMetadata = parseMetadata(metadataList);
@@ -4133,14 +3800,14 @@ var require_util2 = __commonJS({
         if (expectedValue.endsWith("==")) {
           expectedValue = expectedValue.slice(0, -2);
         }
-        let actualValue = crypto4.createHash(algorithm).update(bytes).digest("base64");
+        let actualValue = crypto.createHash(algorithm).update(bytes).digest("base64");
         if (actualValue.endsWith("==")) {
           actualValue = actualValue.slice(0, -2);
         }
         if (actualValue === expectedValue) {
           return true;
         }
-        let actualBase64URL = crypto4.createHash(algorithm).update(bytes).digest("base64url");
+        let actualBase64URL = crypto.createHash(algorithm).update(bytes).digest("base64url");
         if (actualBase64URL.endsWith("==")) {
           actualBase64URL = actualBase64URL.slice(0, -2);
         }
@@ -4154,7 +3821,7 @@ var require_util2 = __commonJS({
     function parseMetadata(metadata) {
       const result = [];
       let empty = true;
-      const supportedHashes = crypto4.getHashes();
+      const supportedHashes = crypto.getHashes();
       for (const token of metadata.split(" ")) {
         empty = false;
         const parsedToken = parseHashWithOptions.exec(token);
@@ -11223,7 +10890,7 @@ var require_proxy_agent = __commonJS({
   "node_modules/undici/lib/proxy-agent.js"(exports, module) {
     "use strict";
     var { kProxy, kClose, kDestroy, kInterceptors } = require_symbols();
-    var { URL: URL3 } = __require("url");
+    var { URL: URL2 } = __require("url");
     var Agent = require_agent();
     var Pool = require_pool();
     var DispatcherBase = require_dispatcher_base();
@@ -11272,7 +10939,7 @@ var require_proxy_agent = __commonJS({
         this[kRequestTls] = opts.requestTls;
         this[kProxyTls] = opts.proxyTls;
         this[kProxyHeaders] = opts.headers || {};
-        const resolvedUrl = new URL3(opts.uri);
+        const resolvedUrl = new URL2(opts.uri);
         const { origin, port, host, username, password } = resolvedUrl;
         if (opts.auth && opts.token) {
           throw new InvalidArgumentError("opts.auth cannot be used in combination with opts.token");
@@ -11327,7 +10994,7 @@ var require_proxy_agent = __commonJS({
         });
       }
       dispatch(opts, handler) {
-        const { host } = new URL3(opts.origin);
+        const { host } = new URL2(opts.origin);
         const headers = buildHeaders(opts.headers);
         throwIfProxyAuthIsSent(headers);
         return this[kAgent].dispatch(
@@ -15741,7 +15408,7 @@ var require_util6 = __commonJS({
         throw new Error("Invalid cookie max-age");
       }
     }
-    function stringify2(cookie) {
+    function stringify(cookie) {
       if (cookie.name.length === 0) {
         return null;
       }
@@ -15806,7 +15473,7 @@ var require_util6 = __commonJS({
     }
     module.exports = {
       isCTLExcludingHtab,
-      stringify: stringify2,
+      stringify,
       getHeadersList
     };
   }
@@ -15957,7 +15624,7 @@ var require_cookies = __commonJS({
   "node_modules/undici/lib/cookies/index.js"(exports, module) {
     "use strict";
     var { parseSetCookie } = require_parse();
-    var { stringify: stringify2, getHeadersList } = require_util6();
+    var { stringify, getHeadersList } = require_util6();
     var { webidl } = require_webidl();
     var { Headers } = require_headers();
     function getCookies(headers) {
@@ -15999,9 +15666,9 @@ var require_cookies = __commonJS({
       webidl.argumentLengthCheck(arguments, 2, { header: "setCookie" });
       webidl.brandCheck(headers, Headers, { strict: false });
       cookie = webidl.converters.Cookie(cookie);
-      const str = stringify2(cookie);
+      const str = stringify(cookie);
       if (str) {
-        headers.append("Set-Cookie", stringify2(cookie));
+        headers.append("Set-Cookie", stringify(cookie));
       }
     }
     webidl.converters.DeleteCookieAttributes = webidl.dictionaryConverter([
@@ -16497,9 +16164,9 @@ var require_connection = __commonJS({
     channels.open = diagnosticsChannel.channel("undici:websocket:open");
     channels.close = diagnosticsChannel.channel("undici:websocket:close");
     channels.socketError = diagnosticsChannel.channel("undici:websocket:socket_error");
-    var crypto4;
+    var crypto;
     try {
-      crypto4 = __require("crypto");
+      crypto = __require("crypto");
     } catch {
     }
     function establishWebSocketConnection(url, protocols, ws, onEstablish, options) {
@@ -16518,7 +16185,7 @@ var require_connection = __commonJS({
         const headersList = new Headers(options.headers)[kHeadersList];
         request.headersList = headersList;
       }
-      const keyValue = crypto4.randomBytes(16).toString("base64");
+      const keyValue = crypto.randomBytes(16).toString("base64");
       request.headersList.append("sec-websocket-key", keyValue);
       request.headersList.append("sec-websocket-version", "13");
       for (const protocol of protocols) {
@@ -16547,7 +16214,7 @@ var require_connection = __commonJS({
             return;
           }
           const secWSAccept = response.headersList.get("Sec-WebSocket-Accept");
-          const digest = crypto4.createHash("sha1").update(keyValue + uid).digest("base64");
+          const digest = crypto.createHash("sha1").update(keyValue + uid).digest("base64");
           if (secWSAccept !== digest) {
             failWebsocketConnection(ws, "Incorrect hash received in Sec-WebSocket-Accept header.");
             return;
@@ -16627,9 +16294,9 @@ var require_frame = __commonJS({
   "node_modules/undici/lib/websocket/frame.js"(exports, module) {
     "use strict";
     var { maxUnsigned16Bit } = require_constants4();
-    var crypto4;
+    var crypto;
     try {
-      crypto4 = __require("crypto");
+      crypto = __require("crypto");
     } catch {
     }
     var WebsocketFrameSend = class {
@@ -16638,7 +16305,7 @@ var require_frame = __commonJS({
        */
       constructor(data) {
         this.frameData = data;
-        this.maskKey = crypto4.randomBytes(4);
+        this.maskKey = crypto.randomBytes(4);
       }
       createFrame(opcode) {
         const bodyLength = this.frameData?.byteLength ?? 0;
@@ -16683,7 +16350,7 @@ var require_frame = __commonJS({
 var require_receiver = __commonJS({
   "node_modules/undici/lib/websocket/receiver.js"(exports, module) {
     "use strict";
-    var { Writable: Writable2 } = __require("stream");
+    var { Writable } = __require("stream");
     var diagnosticsChannel = __require("diagnostics_channel");
     var { parserStates, opcodes, states, emptyBuffer } = require_constants4();
     var { kReadyState, kSentClose, kResponse, kReceivedClose } = require_symbols5();
@@ -16692,7 +16359,7 @@ var require_receiver = __commonJS({
     var channels = {};
     channels.ping = diagnosticsChannel.channel("undici:websocket:ping");
     channels.pong = diagnosticsChannel.channel("undici:websocket:pong");
-    var ByteParser = class extends Writable2 {
+    var ByteParser = class extends Writable {
       #buffers = [];
       #byteOffset = 0;
       #state = parserStates.INFO;
@@ -17761,12 +17428,12 @@ var require_lib = __commonJS({
             throw new Error("Client has already been disposed.");
           }
           const parsedUrl = new URL(requestUrl);
-          let info3 = this._prepareRequest(verb, parsedUrl, headers);
+          let info2 = this._prepareRequest(verb, parsedUrl, headers);
           const maxTries = this._allowRetries && RetryableHttpVerbs.includes(verb) ? this._maxRetries + 1 : 1;
           let numTries = 0;
           let response;
           do {
-            response = yield this.requestRaw(info3, data);
+            response = yield this.requestRaw(info2, data);
             if (response && response.message && response.message.statusCode === HttpCodes.Unauthorized) {
               let authenticationHandler;
               for (const handler of this.handlers) {
@@ -17776,7 +17443,7 @@ var require_lib = __commonJS({
                 }
               }
               if (authenticationHandler) {
-                return authenticationHandler.handleAuthentication(this, info3, data);
+                return authenticationHandler.handleAuthentication(this, info2, data);
               } else {
                 return response;
               }
@@ -17799,8 +17466,8 @@ var require_lib = __commonJS({
                   }
                 }
               }
-              info3 = this._prepareRequest(verb, parsedRedirectUrl, headers);
-              response = yield this.requestRaw(info3, data);
+              info2 = this._prepareRequest(verb, parsedRedirectUrl, headers);
+              response = yield this.requestRaw(info2, data);
               redirectsRemaining--;
             }
             if (!response.message.statusCode || !HttpResponseRetryCodes.includes(response.message.statusCode)) {
@@ -17829,7 +17496,7 @@ var require_lib = __commonJS({
        * @param info
        * @param data
        */
-      requestRaw(info3, data) {
+      requestRaw(info2, data) {
         return __awaiter(this, void 0, void 0, function* () {
           return new Promise((resolve, reject) => {
             function callbackForResult(err, res) {
@@ -17841,7 +17508,7 @@ var require_lib = __commonJS({
                 resolve(res);
               }
             }
-            this.requestRawWithCallback(info3, data, callbackForResult);
+            this.requestRawWithCallback(info2, data, callbackForResult);
           });
         });
       }
@@ -17851,12 +17518,12 @@ var require_lib = __commonJS({
        * @param data
        * @param onResult
        */
-      requestRawWithCallback(info3, data, onResult) {
+      requestRawWithCallback(info2, data, onResult) {
         if (typeof data === "string") {
-          if (!info3.options.headers) {
-            info3.options.headers = {};
+          if (!info2.options.headers) {
+            info2.options.headers = {};
           }
-          info3.options.headers["Content-Length"] = Buffer.byteLength(data, "utf8");
+          info2.options.headers["Content-Length"] = Buffer.byteLength(data, "utf8");
         }
         let callbackCalled = false;
         function handleResult(err, res) {
@@ -17865,7 +17532,7 @@ var require_lib = __commonJS({
             onResult(err, res);
           }
         }
-        const req = info3.httpModule.request(info3.options, (msg) => {
+        const req = info2.httpModule.request(info2.options, (msg) => {
           const res = new HttpClientResponse(msg);
           handleResult(void 0, res);
         });
@@ -17877,7 +17544,7 @@ var require_lib = __commonJS({
           if (socket) {
             socket.end();
           }
-          handleResult(new Error(`Request timeout: ${info3.options.path}`));
+          handleResult(new Error(`Request timeout: ${info2.options.path}`));
         });
         req.on("error", function(err) {
           handleResult(err);
@@ -17913,27 +17580,27 @@ var require_lib = __commonJS({
         return this._getProxyAgentDispatcher(parsedUrl, proxyUrl);
       }
       _prepareRequest(method, requestUrl, headers) {
-        const info3 = {};
-        info3.parsedUrl = requestUrl;
-        const usingSsl = info3.parsedUrl.protocol === "https:";
-        info3.httpModule = usingSsl ? https : http;
+        const info2 = {};
+        info2.parsedUrl = requestUrl;
+        const usingSsl = info2.parsedUrl.protocol === "https:";
+        info2.httpModule = usingSsl ? https : http;
         const defaultPort = usingSsl ? 443 : 80;
-        info3.options = {};
-        info3.options.host = info3.parsedUrl.hostname;
-        info3.options.port = info3.parsedUrl.port ? parseInt(info3.parsedUrl.port) : defaultPort;
-        info3.options.path = (info3.parsedUrl.pathname || "") + (info3.parsedUrl.search || "");
-        info3.options.method = method;
-        info3.options.headers = this._mergeHeaders(headers);
+        info2.options = {};
+        info2.options.host = info2.parsedUrl.hostname;
+        info2.options.port = info2.parsedUrl.port ? parseInt(info2.parsedUrl.port) : defaultPort;
+        info2.options.path = (info2.parsedUrl.pathname || "") + (info2.parsedUrl.search || "");
+        info2.options.method = method;
+        info2.options.headers = this._mergeHeaders(headers);
         if (this.userAgent != null) {
-          info3.options.headers["user-agent"] = this.userAgent;
+          info2.options.headers["user-agent"] = this.userAgent;
         }
-        info3.options.agent = this._getAgent(info3.parsedUrl);
+        info2.options.agent = this._getAgent(info2.parsedUrl);
         if (this.handlers) {
           for (const handler of this.handlers) {
-            handler.prepareRequest(info3.options);
+            handler.prepareRequest(info2.options);
           }
         }
-        return info3;
+        return info2;
       }
       _mergeHeaders(headers) {
         if (this.requestOptions && this.requestOptions.headers) {
@@ -18274,9 +17941,9 @@ var require_oidc_utils = __commonJS({
               const encodedAudience = encodeURIComponent(audience);
               id_token_url = `${id_token_url}&audience=${encodedAudience}`;
             }
-            core_1.debug(`ID token url is ${id_token_url}`);
+            (0, core_1.debug)(`ID token url is ${id_token_url}`);
             const id_token = yield _OidcClient.getCall(id_token_url);
-            core_1.setSecret(id_token);
+            (0, core_1.setSecret)(id_token);
             return id_token;
           } catch (error2) {
             throw new Error(`Error message: ${error2.message}`);
@@ -18589,9 +18256,13 @@ var require_path_utils = __commonJS({
     var __createBinding = exports && exports.__createBinding || (Object.create ? function(o, m, k, k2) {
       if (k2 === void 0)
         k2 = k;
-      Object.defineProperty(o, k2, { enumerable: true, get: function() {
-        return m[k];
-      } });
+      var desc = Object.getOwnPropertyDescriptor(m, k);
+      if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+        desc = { enumerable: true, get: function() {
+          return m[k];
+        } };
+      }
+      Object.defineProperty(o, k2, desc);
     } : function(o, m, k, k2) {
       if (k2 === void 0)
         k2 = k;
@@ -18608,7 +18279,7 @@ var require_path_utils = __commonJS({
       var result = {};
       if (mod != null) {
         for (var k in mod)
-          if (k !== "default" && Object.hasOwnProperty.call(mod, k))
+          if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k))
             __createBinding(result, mod, k);
       }
       __setModuleDefault(result, mod);
@@ -18629,235 +18300,6 @@ var require_path_utils = __commonJS({
       return pth.replace(/[/\\]/g, path.sep);
     }
     exports.toPlatformPath = toPlatformPath;
-  }
-});
-
-// node_modules/@actions/core/lib/core.js
-var require_core = __commonJS({
-  "node_modules/@actions/core/lib/core.js"(exports) {
-    "use strict";
-    var __createBinding = exports && exports.__createBinding || (Object.create ? function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
-      Object.defineProperty(o, k2, { enumerable: true, get: function() {
-        return m[k];
-      } });
-    } : function(o, m, k, k2) {
-      if (k2 === void 0)
-        k2 = k;
-      o[k2] = m[k];
-    });
-    var __setModuleDefault = exports && exports.__setModuleDefault || (Object.create ? function(o, v) {
-      Object.defineProperty(o, "default", { enumerable: true, value: v });
-    } : function(o, v) {
-      o["default"] = v;
-    });
-    var __importStar = exports && exports.__importStar || function(mod) {
-      if (mod && mod.__esModule)
-        return mod;
-      var result = {};
-      if (mod != null) {
-        for (var k in mod)
-          if (k !== "default" && Object.hasOwnProperty.call(mod, k))
-            __createBinding(result, mod, k);
-      }
-      __setModuleDefault(result, mod);
-      return result;
-    };
-    var __awaiter = exports && exports.__awaiter || function(thisArg, _arguments, P, generator) {
-      function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve) {
-          resolve(value);
-        });
-      }
-      return new (P || (P = Promise))(function(resolve, reject) {
-        function fulfilled(value) {
-          try {
-            step(generator.next(value));
-          } catch (e) {
-            reject(e);
-          }
-        }
-        function rejected(value) {
-          try {
-            step(generator["throw"](value));
-          } catch (e) {
-            reject(e);
-          }
-        }
-        function step(result) {
-          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-        }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-      });
-    };
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.getIDToken = exports.getState = exports.saveState = exports.group = exports.endGroup = exports.startGroup = exports.info = exports.notice = exports.warning = exports.error = exports.debug = exports.isDebug = exports.setFailed = exports.setCommandEcho = exports.setOutput = exports.getBooleanInput = exports.getMultilineInput = exports.getInput = exports.addPath = exports.setSecret = exports.exportVariable = exports.ExitCode = void 0;
-    var command_1 = require_command();
-    var file_command_1 = require_file_command();
-    var utils_1 = require_utils();
-    var os2 = __importStar(__require("os"));
-    var path = __importStar(__require("path"));
-    var oidc_utils_1 = require_oidc_utils();
-    var ExitCode;
-    (function(ExitCode2) {
-      ExitCode2[ExitCode2["Success"] = 0] = "Success";
-      ExitCode2[ExitCode2["Failure"] = 1] = "Failure";
-    })(ExitCode = exports.ExitCode || (exports.ExitCode = {}));
-    function exportVariable(name, val) {
-      const convertedVal = utils_1.toCommandValue(val);
-      process.env[name] = convertedVal;
-      const filePath = process.env["GITHUB_ENV"] || "";
-      if (filePath) {
-        return file_command_1.issueFileCommand("ENV", file_command_1.prepareKeyValueMessage(name, val));
-      }
-      command_1.issueCommand("set-env", { name }, convertedVal);
-    }
-    exports.exportVariable = exportVariable;
-    function setSecret(secret) {
-      command_1.issueCommand("add-mask", {}, secret);
-    }
-    exports.setSecret = setSecret;
-    function addPath(inputPath) {
-      const filePath = process.env["GITHUB_PATH"] || "";
-      if (filePath) {
-        file_command_1.issueFileCommand("PATH", inputPath);
-      } else {
-        command_1.issueCommand("add-path", {}, inputPath);
-      }
-      process.env["PATH"] = `${inputPath}${path.delimiter}${process.env["PATH"]}`;
-    }
-    exports.addPath = addPath;
-    function getInput2(name, options) {
-      const val = process.env[`INPUT_${name.replace(/ /g, "_").toUpperCase()}`] || "";
-      if (options && options.required && !val) {
-        throw new Error(`Input required and not supplied: ${name}`);
-      }
-      if (options && options.trimWhitespace === false) {
-        return val;
-      }
-      return val.trim();
-    }
-    exports.getInput = getInput2;
-    function getMultilineInput(name, options) {
-      const inputs = getInput2(name, options).split("\n").filter((x) => x !== "");
-      if (options && options.trimWhitespace === false) {
-        return inputs;
-      }
-      return inputs.map((input) => input.trim());
-    }
-    exports.getMultilineInput = getMultilineInput;
-    function getBooleanInput2(name, options) {
-      const trueValue = ["true", "True", "TRUE"];
-      const falseValue = ["false", "False", "FALSE"];
-      const val = getInput2(name, options);
-      if (trueValue.includes(val))
-        return true;
-      if (falseValue.includes(val))
-        return false;
-      throw new TypeError(`Input does not meet YAML 1.2 "Core Schema" specification: ${name}
-Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
-    }
-    exports.getBooleanInput = getBooleanInput2;
-    function setOutput(name, value) {
-      const filePath = process.env["GITHUB_OUTPUT"] || "";
-      if (filePath) {
-        return file_command_1.issueFileCommand("OUTPUT", file_command_1.prepareKeyValueMessage(name, value));
-      }
-      process.stdout.write(os2.EOL);
-      command_1.issueCommand("set-output", { name }, utils_1.toCommandValue(value));
-    }
-    exports.setOutput = setOutput;
-    function setCommandEcho(enabled) {
-      command_1.issue("echo", enabled ? "on" : "off");
-    }
-    exports.setCommandEcho = setCommandEcho;
-    function setFailed2(message) {
-      process.exitCode = ExitCode.Failure;
-      error2(message);
-    }
-    exports.setFailed = setFailed2;
-    function isDebug() {
-      return process.env["RUNNER_DEBUG"] === "1";
-    }
-    exports.isDebug = isDebug;
-    function debug4(message) {
-      command_1.issueCommand("debug", {}, message);
-    }
-    exports.debug = debug4;
-    function error2(message, properties = {}) {
-      command_1.issueCommand("error", utils_1.toCommandProperties(properties), message instanceof Error ? message.toString() : message);
-    }
-    exports.error = error2;
-    function warning(message, properties = {}) {
-      command_1.issueCommand("warning", utils_1.toCommandProperties(properties), message instanceof Error ? message.toString() : message);
-    }
-    exports.warning = warning;
-    function notice(message, properties = {}) {
-      command_1.issueCommand("notice", utils_1.toCommandProperties(properties), message instanceof Error ? message.toString() : message);
-    }
-    exports.notice = notice;
-    function info3(message) {
-      process.stdout.write(message + os2.EOL);
-    }
-    exports.info = info3;
-    function startGroup(name) {
-      command_1.issue("group", name);
-    }
-    exports.startGroup = startGroup;
-    function endGroup() {
-      command_1.issue("endgroup");
-    }
-    exports.endGroup = endGroup;
-    function group(name, fn) {
-      return __awaiter(this, void 0, void 0, function* () {
-        startGroup(name);
-        let result;
-        try {
-          result = yield fn();
-        } finally {
-          endGroup();
-        }
-        return result;
-      });
-    }
-    exports.group = group;
-    function saveState(name, value) {
-      const filePath = process.env["GITHUB_STATE"] || "";
-      if (filePath) {
-        return file_command_1.issueFileCommand("STATE", file_command_1.prepareKeyValueMessage(name, value));
-      }
-      command_1.issueCommand("save-state", { name }, utils_1.toCommandValue(value));
-    }
-    exports.saveState = saveState;
-    function getState(name) {
-      return process.env[`STATE_${name}`] || "";
-    }
-    exports.getState = getState;
-    function getIDToken(aud) {
-      return __awaiter(this, void 0, void 0, function* () {
-        return yield oidc_utils_1.OidcClient.getIDToken(aud);
-      });
-    }
-    exports.getIDToken = getIDToken;
-    var summary_1 = require_summary();
-    Object.defineProperty(exports, "summary", { enumerable: true, get: function() {
-      return summary_1.summary;
-    } });
-    var summary_2 = require_summary();
-    Object.defineProperty(exports, "markdownSummary", { enumerable: true, get: function() {
-      return summary_2.markdownSummary;
-    } });
-    var path_utils_1 = require_path_utils();
-    Object.defineProperty(exports, "toPosixPath", { enumerable: true, get: function() {
-      return path_utils_1.toPosixPath;
-    } });
-    Object.defineProperty(exports, "toWin32Path", { enumerable: true, get: function() {
-      return path_utils_1.toWin32Path;
-    } });
-    Object.defineProperty(exports, "toPlatformPath", { enumerable: true, get: function() {
-      return path_utils_1.toPlatformPath;
-    } });
   }
 });
 
@@ -19353,7 +18795,7 @@ var require_toolrunner = __commonJS({
     };
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.argStringToArray = exports.ToolRunner = void 0;
-    var os2 = __importStar(__require("os"));
+    var os = __importStar(__require("os"));
     var events = __importStar(__require("events"));
     var child = __importStar(__require("child_process"));
     var path = __importStar(__require("path"));
@@ -19408,12 +18850,12 @@ var require_toolrunner = __commonJS({
       _processLineBuffer(data, strBuffer, onLine) {
         try {
           let s = strBuffer + data.toString();
-          let n = s.indexOf(os2.EOL);
+          let n = s.indexOf(os.EOL);
           while (n > -1) {
             const line = s.substring(0, n);
             onLine(line);
-            s = s.substring(n + os2.EOL.length);
-            n = s.indexOf(os2.EOL);
+            s = s.substring(n + os.EOL.length);
+            n = s.indexOf(os.EOL);
           }
           return s;
         } catch (err) {
@@ -19582,7 +19024,7 @@ var require_toolrunner = __commonJS({
             }
             const optionsNonNull = this._cloneExecOptions(this.options);
             if (!optionsNonNull.silent && optionsNonNull.outStream) {
-              optionsNonNull.outStream.write(this._getCommandString(optionsNonNull) + os2.EOL);
+              optionsNonNull.outStream.write(this._getCommandString(optionsNonNull) + os.EOL);
             }
             const state = new ExecState(optionsNonNull, this.toolPath);
             state.on("debug", (message) => {
@@ -19844,7 +19286,7 @@ var require_exec = __commonJS({
     exports.getExecOutput = exports.exec = void 0;
     var string_decoder_1 = __require("string_decoder");
     var tr = __importStar(require_toolrunner());
-    function exec3(commandLine, args, options) {
+    function exec2(commandLine, args, options) {
       return __awaiter(this, void 0, void 0, function* () {
         const commandArgs = tr.argStringToArray(commandLine);
         if (commandArgs.length === 0) {
@@ -19856,8 +19298,8 @@ var require_exec = __commonJS({
         return runner.exec();
       });
     }
-    exports.exec = exec3;
-    function getExecOutput(commandLine, args, options) {
+    exports.exec = exec2;
+    function getExecOutput2(commandLine, args, options) {
       var _a, _b;
       return __awaiter(this, void 0, void 0, function* () {
         let stdout = "";
@@ -19879,7 +19321,7 @@ var require_exec = __commonJS({
           }
         };
         const listeners = Object.assign(Object.assign({}, options === null || options === void 0 ? void 0 : options.listeners), { stdout: stdOutListener, stderr: stdErrListener });
-        const exitCode = yield exec3(commandLine, args, Object.assign(Object.assign({}, options), { listeners }));
+        const exitCode = yield exec2(commandLine, args, Object.assign(Object.assign({}, options), { listeners }));
         stdout += stdoutDecoder.end();
         stderr += stderrDecoder.end();
         return {
@@ -19889,369 +19331,448 @@ var require_exec = __commonJS({
         };
       });
     }
-    exports.getExecOutput = getExecOutput;
+    exports.getExecOutput = getExecOutput2;
+  }
+});
+
+// node_modules/@actions/core/lib/platform.js
+var require_platform = __commonJS({
+  "node_modules/@actions/core/lib/platform.js"(exports) {
+    "use strict";
+    var __createBinding = exports && exports.__createBinding || (Object.create ? function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      var desc = Object.getOwnPropertyDescriptor(m, k);
+      if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+        desc = { enumerable: true, get: function() {
+          return m[k];
+        } };
+      }
+      Object.defineProperty(o, k2, desc);
+    } : function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      o[k2] = m[k];
+    });
+    var __setModuleDefault = exports && exports.__setModuleDefault || (Object.create ? function(o, v) {
+      Object.defineProperty(o, "default", { enumerable: true, value: v });
+    } : function(o, v) {
+      o["default"] = v;
+    });
+    var __importStar = exports && exports.__importStar || function(mod) {
+      if (mod && mod.__esModule)
+        return mod;
+      var result = {};
+      if (mod != null) {
+        for (var k in mod)
+          if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k))
+            __createBinding(result, mod, k);
+      }
+      __setModuleDefault(result, mod);
+      return result;
+    };
+    var __awaiter = exports && exports.__awaiter || function(thisArg, _arguments, P, generator) {
+      function adopt(value) {
+        return value instanceof P ? value : new P(function(resolve) {
+          resolve(value);
+        });
+      }
+      return new (P || (P = Promise))(function(resolve, reject) {
+        function fulfilled(value) {
+          try {
+            step(generator.next(value));
+          } catch (e) {
+            reject(e);
+          }
+        }
+        function rejected(value) {
+          try {
+            step(generator["throw"](value));
+          } catch (e) {
+            reject(e);
+          }
+        }
+        function step(result) {
+          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+        }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+      });
+    };
+    var __importDefault = exports && exports.__importDefault || function(mod) {
+      return mod && mod.__esModule ? mod : { "default": mod };
+    };
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.getDetails = exports.isLinux = exports.isMacOS = exports.isWindows = exports.arch = exports.platform = void 0;
+    var os_1 = __importDefault(__require("os"));
+    var exec2 = __importStar(require_exec());
+    var getWindowsInfo = () => __awaiter(void 0, void 0, void 0, function* () {
+      const { stdout: version } = yield exec2.getExecOutput('powershell -command "(Get-CimInstance -ClassName Win32_OperatingSystem).Version"', void 0, {
+        silent: true
+      });
+      const { stdout: name } = yield exec2.getExecOutput('powershell -command "(Get-CimInstance -ClassName Win32_OperatingSystem).Caption"', void 0, {
+        silent: true
+      });
+      return {
+        name: name.trim(),
+        version: version.trim()
+      };
+    });
+    var getMacOsInfo = () => __awaiter(void 0, void 0, void 0, function* () {
+      var _a, _b, _c, _d;
+      const { stdout } = yield exec2.getExecOutput("sw_vers", void 0, {
+        silent: true
+      });
+      const version = (_b = (_a = stdout.match(/ProductVersion:\s*(.+)/)) === null || _a === void 0 ? void 0 : _a[1]) !== null && _b !== void 0 ? _b : "";
+      const name = (_d = (_c = stdout.match(/ProductName:\s*(.+)/)) === null || _c === void 0 ? void 0 : _c[1]) !== null && _d !== void 0 ? _d : "";
+      return {
+        name,
+        version
+      };
+    });
+    var getLinuxInfo = () => __awaiter(void 0, void 0, void 0, function* () {
+      const { stdout } = yield exec2.getExecOutput("lsb_release", ["-i", "-r", "-s"], {
+        silent: true
+      });
+      const [name, version] = stdout.trim().split("\n");
+      return {
+        name,
+        version
+      };
+    });
+    exports.platform = os_1.default.platform();
+    exports.arch = os_1.default.arch();
+    exports.isWindows = exports.platform === "win32";
+    exports.isMacOS = exports.platform === "darwin";
+    exports.isLinux = exports.platform === "linux";
+    function getDetails() {
+      return __awaiter(this, void 0, void 0, function* () {
+        return Object.assign(Object.assign({}, yield exports.isWindows ? getWindowsInfo() : exports.isMacOS ? getMacOsInfo() : getLinuxInfo()), {
+          platform: exports.platform,
+          arch: exports.arch,
+          isWindows: exports.isWindows,
+          isMacOS: exports.isMacOS,
+          isLinux: exports.isLinux
+        });
+      });
+    }
+    exports.getDetails = getDetails;
+  }
+});
+
+// node_modules/@actions/core/lib/core.js
+var require_core = __commonJS({
+  "node_modules/@actions/core/lib/core.js"(exports) {
+    "use strict";
+    var __createBinding = exports && exports.__createBinding || (Object.create ? function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      var desc = Object.getOwnPropertyDescriptor(m, k);
+      if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+        desc = { enumerable: true, get: function() {
+          return m[k];
+        } };
+      }
+      Object.defineProperty(o, k2, desc);
+    } : function(o, m, k, k2) {
+      if (k2 === void 0)
+        k2 = k;
+      o[k2] = m[k];
+    });
+    var __setModuleDefault = exports && exports.__setModuleDefault || (Object.create ? function(o, v) {
+      Object.defineProperty(o, "default", { enumerable: true, value: v });
+    } : function(o, v) {
+      o["default"] = v;
+    });
+    var __importStar = exports && exports.__importStar || function(mod) {
+      if (mod && mod.__esModule)
+        return mod;
+      var result = {};
+      if (mod != null) {
+        for (var k in mod)
+          if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k))
+            __createBinding(result, mod, k);
+      }
+      __setModuleDefault(result, mod);
+      return result;
+    };
+    var __awaiter = exports && exports.__awaiter || function(thisArg, _arguments, P, generator) {
+      function adopt(value) {
+        return value instanceof P ? value : new P(function(resolve) {
+          resolve(value);
+        });
+      }
+      return new (P || (P = Promise))(function(resolve, reject) {
+        function fulfilled(value) {
+          try {
+            step(generator.next(value));
+          } catch (e) {
+            reject(e);
+          }
+        }
+        function rejected(value) {
+          try {
+            step(generator["throw"](value));
+          } catch (e) {
+            reject(e);
+          }
+        }
+        function step(result) {
+          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+        }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+      });
+    };
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.platform = exports.toPlatformPath = exports.toWin32Path = exports.toPosixPath = exports.markdownSummary = exports.summary = exports.getIDToken = exports.getState = exports.saveState = exports.group = exports.endGroup = exports.startGroup = exports.info = exports.notice = exports.warning = exports.error = exports.debug = exports.isDebug = exports.setFailed = exports.setCommandEcho = exports.setOutput = exports.getBooleanInput = exports.getMultilineInput = exports.getInput = exports.addPath = exports.setSecret = exports.exportVariable = exports.ExitCode = void 0;
+    var command_1 = require_command();
+    var file_command_1 = require_file_command();
+    var utils_1 = require_utils();
+    var os = __importStar(__require("os"));
+    var path = __importStar(__require("path"));
+    var oidc_utils_1 = require_oidc_utils();
+    var ExitCode;
+    (function(ExitCode2) {
+      ExitCode2[ExitCode2["Success"] = 0] = "Success";
+      ExitCode2[ExitCode2["Failure"] = 1] = "Failure";
+    })(ExitCode || (exports.ExitCode = ExitCode = {}));
+    function exportVariable(name, val) {
+      const convertedVal = (0, utils_1.toCommandValue)(val);
+      process.env[name] = convertedVal;
+      const filePath = process.env["GITHUB_ENV"] || "";
+      if (filePath) {
+        return (0, file_command_1.issueFileCommand)("ENV", (0, file_command_1.prepareKeyValueMessage)(name, val));
+      }
+      (0, command_1.issueCommand)("set-env", { name }, convertedVal);
+    }
+    exports.exportVariable = exportVariable;
+    function setSecret(secret) {
+      (0, command_1.issueCommand)("add-mask", {}, secret);
+    }
+    exports.setSecret = setSecret;
+    function addPath(inputPath) {
+      const filePath = process.env["GITHUB_PATH"] || "";
+      if (filePath) {
+        (0, file_command_1.issueFileCommand)("PATH", inputPath);
+      } else {
+        (0, command_1.issueCommand)("add-path", {}, inputPath);
+      }
+      process.env["PATH"] = `${inputPath}${path.delimiter}${process.env["PATH"]}`;
+    }
+    exports.addPath = addPath;
+    function getInput(name, options) {
+      const val = process.env[`INPUT_${name.replace(/ /g, "_").toUpperCase()}`] || "";
+      if (options && options.required && !val) {
+        throw new Error(`Input required and not supplied: ${name}`);
+      }
+      if (options && options.trimWhitespace === false) {
+        return val;
+      }
+      return val.trim();
+    }
+    exports.getInput = getInput;
+    function getMultilineInput(name, options) {
+      const inputs = getInput(name, options).split("\n").filter((x) => x !== "");
+      if (options && options.trimWhitespace === false) {
+        return inputs;
+      }
+      return inputs.map((input) => input.trim());
+    }
+    exports.getMultilineInput = getMultilineInput;
+    function getBooleanInput2(name, options) {
+      const trueValue = ["true", "True", "TRUE"];
+      const falseValue = ["false", "False", "FALSE"];
+      const val = getInput(name, options);
+      if (trueValue.includes(val))
+        return true;
+      if (falseValue.includes(val))
+        return false;
+      throw new TypeError(`Input does not meet YAML 1.2 "Core Schema" specification: ${name}
+Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
+    }
+    exports.getBooleanInput = getBooleanInput2;
+    function setOutput2(name, value) {
+      const filePath = process.env["GITHUB_OUTPUT"] || "";
+      if (filePath) {
+        return (0, file_command_1.issueFileCommand)("OUTPUT", (0, file_command_1.prepareKeyValueMessage)(name, value));
+      }
+      process.stdout.write(os.EOL);
+      (0, command_1.issueCommand)("set-output", { name }, (0, utils_1.toCommandValue)(value));
+    }
+    exports.setOutput = setOutput2;
+    function setCommandEcho(enabled) {
+      (0, command_1.issue)("echo", enabled ? "on" : "off");
+    }
+    exports.setCommandEcho = setCommandEcho;
+    function setFailed2(message) {
+      process.exitCode = ExitCode.Failure;
+      error2(message);
+    }
+    exports.setFailed = setFailed2;
+    function isDebug() {
+      return process.env["RUNNER_DEBUG"] === "1";
+    }
+    exports.isDebug = isDebug;
+    function debug3(message) {
+      (0, command_1.issueCommand)("debug", {}, message);
+    }
+    exports.debug = debug3;
+    function error2(message, properties = {}) {
+      (0, command_1.issueCommand)("error", (0, utils_1.toCommandProperties)(properties), message instanceof Error ? message.toString() : message);
+    }
+    exports.error = error2;
+    function warning2(message, properties = {}) {
+      (0, command_1.issueCommand)("warning", (0, utils_1.toCommandProperties)(properties), message instanceof Error ? message.toString() : message);
+    }
+    exports.warning = warning2;
+    function notice(message, properties = {}) {
+      (0, command_1.issueCommand)("notice", (0, utils_1.toCommandProperties)(properties), message instanceof Error ? message.toString() : message);
+    }
+    exports.notice = notice;
+    function info2(message) {
+      process.stdout.write(message + os.EOL);
+    }
+    exports.info = info2;
+    function startGroup(name) {
+      (0, command_1.issue)("group", name);
+    }
+    exports.startGroup = startGroup;
+    function endGroup() {
+      (0, command_1.issue)("endgroup");
+    }
+    exports.endGroup = endGroup;
+    function group(name, fn) {
+      return __awaiter(this, void 0, void 0, function* () {
+        startGroup(name);
+        let result;
+        try {
+          result = yield fn();
+        } finally {
+          endGroup();
+        }
+        return result;
+      });
+    }
+    exports.group = group;
+    function saveState(name, value) {
+      const filePath = process.env["GITHUB_STATE"] || "";
+      if (filePath) {
+        return (0, file_command_1.issueFileCommand)("STATE", (0, file_command_1.prepareKeyValueMessage)(name, value));
+      }
+      (0, command_1.issueCommand)("save-state", { name }, (0, utils_1.toCommandValue)(value));
+    }
+    exports.saveState = saveState;
+    function getState(name) {
+      return process.env[`STATE_${name}`] || "";
+    }
+    exports.getState = getState;
+    function getIDToken(aud) {
+      return __awaiter(this, void 0, void 0, function* () {
+        return yield oidc_utils_1.OidcClient.getIDToken(aud);
+      });
+    }
+    exports.getIDToken = getIDToken;
+    var summary_1 = require_summary();
+    Object.defineProperty(exports, "summary", { enumerable: true, get: function() {
+      return summary_1.summary;
+    } });
+    var summary_2 = require_summary();
+    Object.defineProperty(exports, "markdownSummary", { enumerable: true, get: function() {
+      return summary_2.markdownSummary;
+    } });
+    var path_utils_1 = require_path_utils();
+    Object.defineProperty(exports, "toPosixPath", { enumerable: true, get: function() {
+      return path_utils_1.toPosixPath;
+    } });
+    Object.defineProperty(exports, "toWin32Path", { enumerable: true, get: function() {
+      return path_utils_1.toWin32Path;
+    } });
+    Object.defineProperty(exports, "toPlatformPath", { enumerable: true, get: function() {
+      return path_utils_1.toPlatformPath;
+    } });
+    exports.platform = __importStar(require_platform());
   }
 });
 
 // src/index.ts
-var core3 = __toESM(require_core(), 1);
-var exec = __toESM(require_exec(), 1);
-import os from "node:os";
+var core2 = __toESM(require_core(), 1);
 import process2 from "node:process";
 
-// src/constants.ts
-var POLYFILLS = {
-  "ant-optional": { default: false, needs: [], aptPackage: "ant-optional" },
-  "build-essential": { default: true, needs: [], aptPackage: "build-essential" },
-  "ca-certificates": { default: true, needs: [], aptPackage: "ca-certificates" },
-  "dpkg-dev": { default: true, needs: [], aptPackage: "dpkg-dev" },
-  "fonts-noto-color-emoji": { default: false, needs: [], aptPackage: "fonts-noto-color-emoji" },
-  "g++": { default: true, needs: [], aptPackage: "g++" },
-  "gnome-terminal": { default: true, needs: [], aptPackage: "gnome-terminal" },
-  "iputils-ping": { default: false, needs: [], aptPackage: "iputils-ping" },
-  "libffi-dev": { default: true, needs: [], aptPackage: "libffi-dev" },
-  "libgbm-dev": { default: true, needs: [], aptPackage: "libgbm-dev" },
-  "libgconf-2-4": { default: true, needs: [], aptPackage: "libgconf-2-4" },
-  "libgsl-dev": { default: true, needs: [], aptPackage: "libgsl-dev" },
-  "libmagic-dev": { default: false, needs: [], aptPackage: "libmagic-dev" },
-  "libmagickcore-dev": { default: false, needs: [], aptPackage: "libmagickcore-dev" },
-  "libmagickwand-dev": { default: false, needs: [], aptPackage: "libmagickwand-dev" },
-  "libpq-dev": { default: false, needs: [], aptPackage: "libpq-dev" },
-  "libsecret-1-dev": { default: false, needs: [], aptPackage: "libsecret-1-dev" },
-  "libsqlite3-dev": { default: false, needs: [], aptPackage: "libsqlite3-dev" },
-  "libssl-dev": { default: true, needs: [], aptPackage: "libssl-dev" },
-  "libxkbfile-dev": { default: true, needs: [], aptPackage: "libxkbfile-dev" },
-  "libyaml-dev": { default: true, needs: [], aptPackage: "libyaml-dev" },
-  "net-tools": { default: false, needs: [], aptPackage: "net-tools" },
-  "openssh-client": { default: false, needs: [], aptPackage: "openssh-client" },
-  "p7zip-full": { default: false, needs: [], aptPackage: "p7zip-full" },
-  "p7zip-rar": { default: false, needs: [], aptPackage: "p7zip-rar" },
-  "pkg-config": { default: true, needs: [], aptPackage: "pkg-config" },
-  "python-is-python3": { default: false, needs: [], aptPackage: "python-is-python3" },
-  "python3-dev": { default: false, needs: [], aptPackage: "python3-dev" },
-  "python3-pip": { default: false, needs: [], aptPackage: "python3-pip" },
-  "python3-venv": { default: false, needs: [], aptPackage: "python3-venv" },
-  "xz-utils": { default: false, needs: [], aptPackage: "xz-utils" },
-  acl: { default: false, needs: [], aptPackage: "acl" },
-  ant: { default: false, needs: [], aptPackage: "ant" },
-  aria2: { default: false, needs: [], aptPackage: "aria2" },
-  autoconf: { default: false, needs: [], aptPackage: "autoconf" },
-  automake: { default: false, needs: [], aptPackage: "automake" },
-  binutils: { default: false, needs: [], aptPackage: "binutils" },
-  bison: { default: false, needs: [], aptPackage: "bison" },
-  brotli: { default: true, needs: [], aptPackage: "brotli" },
-  bzip2: { default: false, needs: [], aptPackage: "bzip2" },
-  coreutils: { default: true, needs: [], aptPackage: "coreutils" },
-  curl: { default: true, needs: [], aptPackage: "curl" },
-  dbus: { default: false, needs: [], aptPackage: "dbus" },
-  dnsutils: { default: false, needs: [], aptPackage: "dnsutils" },
-  dpkg: { default: true, needs: [], aptPackage: "dpkg" },
-  fakeroot: { default: false, needs: [], aptPackage: "fakeroot" },
-  file: { default: false, needs: [], aptPackage: "file" },
-  flex: { default: false, needs: [], aptPackage: "flex" },
-  ftp: { default: false, needs: [], aptPackage: "ftp" },
-  gcc: { default: true, needs: [], aptPackage: "gcc" },
-  gnupg: { default: true, needs: [], aptPackage: "gnupg" },
-  gnupg2: { default: true, needs: [], aptPackage: "gnupg2" },
-  haveged: { default: false, needs: [], aptPackage: "haveged" },
-  imagemagick: { default: false, needs: [], aptPackage: "imagemagick" },
-  iproute2: { default: false, needs: [], aptPackage: "iproute2" },
-  jq: { default: true, needs: [], aptPackage: "jq" },
-  kmod: { default: false, needs: [], aptPackage: "kmod" },
-  libcurl4: { default: true, needs: [], aptPackage: "libcurl4" },
-  libtool: { default: true, needs: [], aptPackage: "libtool" },
-  libunwind8: { default: true, needs: [], aptPackage: "libunwind8" },
-  libxss1: { default: true, needs: [], aptPackage: "libxss1" },
-  locales: { default: false, needs: [], aptPackage: "locales" },
-  lz4: { default: false, needs: [], aptPackage: "lz4" },
-  m4: { default: false, needs: [], aptPackage: "m4" },
-  make: { default: true, needs: [], aptPackage: "make" },
-  mediainfo: { default: false, needs: [], aptPackage: "mediainfo" },
-  mercurial: { default: false, needs: [], aptPackage: "mercurial" },
-  netcat: { default: false, needs: [], aptPackage: "netcat" },
-  nodejs: { default: false, needs: [], aptPackage: "nodejs" },
-  parallel: { default: false, needs: [], aptPackage: "parallel" },
-  pass: { default: false, needs: [], aptPackage: "pass" },
-  patchelf: { default: false, needs: [], aptPackage: "patchelf" },
-  pigz: { default: false, needs: [], aptPackage: "pigz" },
-  pollinate: { default: false, needs: [], aptPackage: "pollinate" },
-  python3: { default: false, needs: [], aptPackage: "python3" },
-  rpm: { default: false, needs: [], aptPackage: "rpm" },
-  rsync: { default: false, needs: [], aptPackage: "rsync" },
-  shellcheck: { default: false, needs: [], aptPackage: "shellcheck" },
-  sphinxsearch: { default: false, needs: [], aptPackage: "sphinxsearch" },
-  sqlite3: { default: false, needs: [], aptPackage: "sqlite3" },
-  ssh: { default: true, needs: [], aptPackage: "ssh" },
-  sshpass: { default: false, needs: [], aptPackage: "sshpass" },
-  subversion: { default: false, needs: [], aptPackage: "subversion" },
-  sudo: { default: true, needs: [], aptPackage: "sudo" },
-  swig: { default: false, needs: [], aptPackage: "swig" },
-  tar: { default: true, needs: [], aptPackage: "tar" },
-  telnet: { default: false, needs: [], aptPackage: "telnet" },
-  texinfo: { default: false, needs: [], aptPackage: "texinfo" },
-  time: { default: false, needs: [], aptPackage: "time" },
-  tk: { default: false, needs: [], aptPackage: "tk" },
-  tzdata: { default: false, needs: [], aptPackage: "tzdata" },
-  uidmap: { default: false, needs: [], aptPackage: "uidmap" },
-  unzip: { default: true, needs: [], aptPackage: "unzip" },
-  upx: { default: false, needs: [], aptPackage: "upx" },
-  wget: { default: true, needs: [], aptPackage: "wget" },
-  xorriso: { default: false, needs: [], aptPackage: "xorriso" },
-  xvfb: { default: false, needs: [], aptPackage: "xvfb" },
-  zip: { default: true, needs: [], aptPackage: "zip" },
-  zsync: { default: false, needs: [], aptPackage: "zsync" },
-  yarn: {
-    default: true,
-    needs: ["curl"],
-    path: "$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH",
-    command: "curl -o- -L https://yarnpkg.com/install.sh | bash || true"
-  },
-  docker: {
-    default: true,
-    needs: ["gnome-terminal", "curl", "gnupg", "ca-certificates"],
-    command: [
-      "sudo install -m 0755 -d /etc/apt/keyrings",
-      "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg",
-      "sudo chmod a+r /etc/apt/keyrings/docker.gpg",
-      'echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null',
-      "sudo apt-get update -y",
-      "sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin"
-    ].join(" && ")
-  },
-  "aws-cli": {
-    default: true,
-    needs: [],
-    command: [
-      'curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"',
-      "unzip awscliv2.zip",
-      "sudo ./aws/install"
-    ].join(" && ")
-  }
-};
+// src/utils/dockerUtils.ts
+var exec = __toESM(require_exec(), 1);
 
-// src/utils/createStreams.ts
+// src/utils/safeJsonParse.ts
+function safeJsonParse(input) {
+  try {
+    return JSON.parse(input);
+  } catch (error2) {
+    return null;
+  }
+}
+
+// src/utils/dockerUtils.ts
+async function queryDockerNetworks() {
+  const allDockerNetworks = await exec.getExecOutput("docker", ["network", "ls", "--format", '"{{.Name}}"']);
+  if (allDockerNetworks.exitCode !== 0) {
+    throw new Error(`Failed to list all Docker networks: ${allDockerNetworks.stderr}`);
+  }
+  return allDockerNetworks.stdout.split("\n").filter(Boolean);
+}
+async function inspectNetwork(network) {
+  const inspect = await exec.getExecOutput("docker", ["network", "inspect", network]);
+  if (inspect.exitCode !== 0) {
+    throw new Error(`Failed to inspect network ${network}: ${inspect.stderr}`);
+  }
+  const inspectJson = safeJsonParse(inspect.stdout);
+  if (!inspectJson) {
+    throw new Error(`Failed to parse Docker network inspect JSON for network ${network}`);
+  }
+  return inspectJson;
+}
+
+// src/utils/errorHandler.ts
 var core = __toESM(require_core(), 1);
-import { Writable } from "node:stream";
-function createStreams() {
-  const stdout = new Writable({
-    write(chunk, __, callback) {
-      core.debug(chunk.toString());
-      callback();
-    }
-  });
-  const stderr = new Writable({
-    write(chunk, __, callback) {
-      core.error(chunk.toString());
-      callback();
-    }
-  });
-  return { outStream: stdout, errStream: stderr };
-}
-
-// src/utils/parseModulesToInstall.ts
-var core2 = __toESM(require_core(), 1);
-function parseModulesToInstall({
-  ignore,
-  include,
-  skipDefaults
-}) {
-  const ALL_POLYFILLS = Object.entries(POLYFILLS);
-  const ignoreSet = new Set(ignore);
-  core2.info(`Ignored modules: ${Array.from(ignoreSet).join(", ")}`);
-  const includeSet = new Set(include);
-  core2.info(`Included modules: ${Array.from(includeSet).join(", ")}`);
-  core2.info(`Skip defaults: ${skipDefaults}`);
-  const modulesToInstall = [];
-  for (const [polyfill, polyfillOptions] of ALL_POLYFILLS) {
-    if (ignoreSet.has(polyfill)) {
-      core2.debug(`Skipping ${polyfill} polyfill because it is ignored.`);
-      continue;
-    }
-    if (includeSet.has(polyfill)) {
-      core2.debug(`Including ${polyfill} polyfill because it is included.`);
-      modulesToInstall.push([polyfill, polyfillOptions]);
-      continue;
-    }
-    if (skipDefaults || !polyfillOptions.default) {
-      core2.debug(
-        skipDefaults ? `Skipping ${polyfill} polyfill because it is not included and skipDefaults is true.` : `Skipping ${polyfill} polyfill because it is not a default polyfill.`
-      );
-      continue;
-    }
-    core2.debug(`Including ${polyfill} polyfill because it is a default polyfill.`);
-    modulesToInstall.push([polyfill, polyfillOptions]);
-  }
-  core2.debug(`Modules to install: ${modulesToInstall.map(([polyfill]) => polyfill).join(", ")}`);
-  return modulesToInstall;
-}
-
-// src/structures/ValidationError.ts
-var ValidationError = class extends Error {
-  constructor(message) {
-    super(message);
-    this.name = "ValidationError";
-  }
-};
-
-// src/utils/validate.ts
-function validateInputs({
-  ignore,
-  include,
-  skipDefaults
-}) {
-  if (skipDefaults && include.length === 0) {
-    throw new ValidationError("Cannot skip defaults without including any polyfills.");
-  }
-  if (ignore.length >= Object.keys(POLYFILLS).length) {
-    throw new ValidationError("Cannot ignore all polyfills.");
-  }
-  validatePackageNames(ignore, "ignored");
-  validatePackageNames(include, "include");
-}
-function validatePackageNames(packages, source) {
-  const unknownPolyfills = packages.filter((packageName) => !POLYFILLS[packageName]);
-  if (unknownPolyfills.length > 0) {
-    throw new ValidationError(`Unknown polyfills on ${source}: ${unknownPolyfills.join(", ")}`);
-  }
-}
-function validatePolyfillNeeds(modulesToInstall) {
-  const polyfillNeeds = modulesToInstall.reduce((acc, [polyfill, polyfillOptions]) => {
-    if (!polyfillOptions.needs?.length)
-      return acc;
-    const polyfillNeeds2 = polyfillOptions.needs.map((polyfillNeed) => ({
-      need: polyfillNeed,
-      requiredBy: polyfill
-    }));
-    return [...acc, ...polyfillNeeds2];
-  }, []);
-  const modulesToInstallMap = new Map(modulesToInstall);
-  const missingModules = polyfillNeeds.filter((polyfill) => !modulesToInstallMap.has(polyfill.need));
-  if (missingModules.length > 0) {
-    throw new ValidationError(
-      `Missing polyfills needed by other polyfills: ${missingModules.map(({ need, requiredBy }) => `${need} (Required by: ${requiredBy})`).join(", ")}`
-    );
+function handleError(error2) {
+  core.debug(String(error2));
+  if (error2.message) {
+    core.setFailed(error2.message);
+  } else {
+    core.setFailed("An unexpected error occurred. Please contact the package maintainer if the problem persists.");
   }
 }
 
 // src/index.ts
 async function main() {
-  const IGNORE = core3.getInput("ignored", { required: false, trimWhitespace: true })?.split(",").filter(Boolean) ?? [];
-  const INCLUDE = core3.getInput("include", { required: false, trimWhitespace: true })?.split(",").filter(Boolean) ?? [];
-  const SKIP_DEFAULTS = core3.getInput("skip-defaults") ? core3.getBooleanInput("skip-defaults", {
-    required: false,
-    trimWhitespace: true
-  }) : false;
-  const RUN_IN_BAND = core3.getInput("run-in-band") ? core3.getBooleanInput("run-in-band") : false;
+  const STRICT = core2.getBooleanInput("strict", { required: false, trimWhitespace: true });
   try {
-    core3.debug(`Inputs: ${JSON.stringify({ IGNORE, INCLUDE, SKIP_DEFAULTS, RUN_IN_BAND }, null, 2)}`);
-    const platform = os.platform();
-    const promises = [];
-    if (platform !== "linux") {
-      throw new Error(`Unsupported platform: ${platform}`);
-    }
-    core3.debug("Validating inputs...");
-    validateInputs({ ignore: IGNORE, include: INCLUDE, skipDefaults: SKIP_DEFAULTS });
-    core3.debug("Installing dependencies...");
-    const updateCode = await exec.exec("sudo", ["apt-get", "update", "-y"], {
-      ...createStreams()
-    });
-    if (updateCode !== 0) {
-      throw new Error(`Apt update failed with exit code ${updateCode}.`);
-    }
-    const modulesToInstall = parseModulesToInstall({ ignore: IGNORE, include: INCLUDE, skipDefaults: SKIP_DEFAULTS });
-    validatePolyfillNeeds(modulesToInstall);
-    let aptModulesToInstall = modulesToInstall.filter(([, polyfill]) => polyfill.aptPackage);
-    const nonAptModulesToInstall = modulesToInstall.filter(([, polyfill]) => polyfill.command);
-    const needs = nonAptModulesToInstall.reduce((acc, [, cur]) => {
-      if (!cur.needs?.length)
-        return acc;
-      return [...acc, ...cur.needs];
-    }, []);
-    if (!RUN_IN_BAND && needs.length > 0) {
-      core3.info(`Installing ${needs.length} polyfills needed by other polyfills beforehand...`);
-      const code = await exec.exec(
-        "sudo",
-        ["apt-get", "install", "-y", "--no-install-recommends", ...needs.map((need) => POLYFILLS[need].aptPackage)],
-        {
-          ...createStreams()
+    core2.debug(`Inputs: ${JSON.stringify({ STRICT }, null, 2)}`);
+    core2.debug("Querying Docker networks...");
+    const networksList = await queryDockerNetworks();
+    core2.info("All Docker networks: \n" + networksList.join("\n"));
+    let githubNetworkIp = null;
+    for (const network of networksList) {
+      const inspectJson = await inspectNetwork(network);
+      core2.debug(`Network ${network} inspect: ${JSON.stringify(inspectJson, null, 2)}`);
+      if (inspectJson[0]?.Name?.startsWith("github")) {
+        githubNetworkIp = inspectJson[0]?.IPAM?.Config?.[0]?.Gateway;
+        if (!githubNetworkIp) {
+          core2.debug(`Failed to get GitHub Actions network IP for network ${network}`);
+          throw new Error(`Failed to get GitHub Actions network IP for network ${network}`);
         }
-      );
-      if (code !== 0) {
-        throw new Error(`Apt failed with exit code ${code}.`);
-      }
-      core3.debug(`Removing apt packages that are no longer needed: ${needs.join(", ")}`);
-      const needsSet = new Set(needs);
-      aptModulesToInstall = aptModulesToInstall.filter(([name]) => !needsSet.has(name));
-      core3.info("Successfully installed polyfills needed by other polyfills.");
-    }
-    if (aptModulesToInstall.length > 0) {
-      const installAptPackages = async () => {
-        core3.info(`Installing ${aptModulesToInstall.length} apt packages...`);
-        const code = await exec.exec(
-          "sudo",
-          [
-            "apt-get",
-            "install",
-            "-y",
-            "--no-install-recommends",
-            ...aptModulesToInstall.map(([, polyfill]) => polyfill.aptPackage)
-          ],
-          {
-            ...createStreams()
-          }
-        );
-        if (code !== 0) {
-          throw new Error(`Apt failed with exit code ${code}.`);
-        }
-        core3.info("Successfully installed apt packages.");
-      };
-      if (RUN_IN_BAND) {
-        await installAptPackages();
-      } else {
-        promises.push(installAptPackages());
+        core2.info(`Found GitHub Actions network: ${network} with IP: ${githubNetworkIp}`);
+        break;
       }
     }
-    for (const [polyfill, polyfillOptions] of nonAptModulesToInstall) {
-      const installCommandPolyfill = async () => {
-        core3.info(`Installing ${polyfill} polyfill...`);
-        const prefixedCommand = ["/bin/bash", "-c", polyfillOptions.command];
-        const code = await exec.exec(prefixedCommand[0], [prefixedCommand[1], prefixedCommand[2]], {
-          ...createStreams()
-        });
-        if (polyfillOptions.path) {
-          const escapedPath = polyfillOptions.path.replaceAll('"', '\\"');
-          await exec.exec("/bin/bash", ["-c", `echo "${escapedPath}" >> $GITHUB_PATH`], {
-            ...createStreams()
-          });
-          core3.info(`Added ${polyfill} polyfill to PATH.`);
-        }
-        if (code !== 0) {
-          throw new Error(`Polyfill ${polyfill} failed with exit code ${code}.`);
-        }
-        core3.info(`Successfully installed ${polyfill} polyfill.`);
-      };
-      if (RUN_IN_BAND) {
-        await installCommandPolyfill();
-      } else {
-        promises.push(installCommandPolyfill());
-      }
+    if (!githubNetworkIp && STRICT) {
+      core2.error("Strict mode: GitHub Actions network not found");
+      throw new Error("GitHub Actions network not found");
+    } else if (!githubNetworkIp) {
+      core2.warning("GitHub Actions network not found");
+      return;
     }
-    if (!RUN_IN_BAND) {
-      await Promise.all(promises);
-    }
-    core3.info("Cleaning up...");
-    await exec.exec("sudo", ["apt-get", "autoremove", "-y"], {
-      ...createStreams()
-    });
-    core3.info("Successfully cleaned up.");
-    core3.info("Successfully installed all polyfills.");
+    core2.setOutput("github-network-ip", githubNetworkIp);
+    core2.info('GitHub Actions network IP set to "github-network-ip"');
   } catch (error2) {
-    core3.debug(String(error2));
-    if (error2.message) {
-      core3.setFailed(error2.message);
-    } else {
-      core3.setFailed("An unexpected error occurred. Please contact the package maintainer if the problem persists.");
-    }
+    handleError(error2);
   }
 }
 if (process2.env.NODE_ENV !== "test") {
