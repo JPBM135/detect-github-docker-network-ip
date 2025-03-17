@@ -19748,8 +19748,8 @@ async function createIpTableRule(portMapping) {
     "nat",
     // Create a rule in the NAT table
     "-A",
-    "PREROUTING",
-    // Append the rule to the PREROUTING chain
+    "OUTPUT",
+    // Append the rule to the OUTPUT chain
     "-p",
     "tcp",
     // Match TCP packets
