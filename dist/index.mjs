@@ -19742,7 +19742,8 @@ var core2 = __toESM(require_core(), 1);
 var exec3 = __toESM(require_exec(), 1);
 async function createIpTableRule(portMapping) {
   const { host, container } = portMapping;
-  const code = await exec3.exec("iptables", [
+  const code = await exec3.exec("sudo", [
+    "iptables",
     "-t",
     "nat",
     // Create a rule in the NAT table
