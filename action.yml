@@ -4,7 +4,7 @@ icon: 'cloud-lightning'
 color: 'gray-dark'
 author: 'github.com/JPBM135'
 
-input:
+inputs:
   strict:
     description: 'If the action should fail if the IP address cannot be found'
     required: false
