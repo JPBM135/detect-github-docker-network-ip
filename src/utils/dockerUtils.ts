@@ -3,7 +3,7 @@ import { safeJsonParse } from './safeJsonParse.js';
 import type { DockerNetwork } from '../types.js';
 
 export async function queryDockerNetworks() {
-  const allDockerNetworks = await exec.getExecOutput('docker', ['network', 'ls', '--format', '"{{.Name}}"']);
+  const allDockerNetworks = await exec.getExecOutput('docker', ['network', 'ls', '--format', '{{.Name}}']);
 
   if (allDockerNetworks.exitCode !== 0) {
     throw new Error(`Failed to list all Docker networks: ${allDockerNetworks.stderr}`);
