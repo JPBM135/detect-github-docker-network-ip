@@ -5,7 +5,7 @@ import type { DockerNetwork, PortMapping } from '../types.js';
 export async function discoverPorts(host: string, network: DockerNetwork): Promise<PortMapping[]> {
   const ports: PortMapping[] = [];
 
-  for (const containerId of Object.keys(network.containers)) {
+  for (const containerId of Object.keys(network.Containers)) {
     const inspectedContainer = await inspectContainer(containerId);
 
     if (!inspectedContainer) {

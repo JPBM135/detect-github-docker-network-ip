@@ -1,15 +1,15 @@
 export interface DockerNetwork {
+  Containers: {
+    [key: string]: {
+      Name: string;
+    };
+  };
   IPAM: {
     Config: {
       Gateway: string;
     }[];
   };
   Name: string;
-  containers: {
-    [key: string]: {
-      Name: string;
-    };
-  };
 }
 
 export interface DockerContainer {

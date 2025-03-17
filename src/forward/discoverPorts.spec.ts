@@ -18,7 +18,7 @@ const mockNetwork: DockerNetwork = {
       },
     ],
   },
-  containers: {
+  Containers: {
     container_id: {
       Name: 'github_container',
     },
