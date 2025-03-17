@@ -1,6 +1,6 @@
 {
   "name": "@jpbm135/detect-github-docker-network",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Detects the network of a GitHub Docker container",
   "main": "dist/index.mjs",
   "scripts": {

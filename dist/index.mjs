@@ -19750,6 +19750,10 @@ async function main() {
     core2.info("All Docker networks: \n" + networksList.join("\n"));
     let githubNetworkIp = null;
     for (const network of networksList) {
+      if (!network.startsWith("github")) {
+        core2.debug(`Skipping network ${network}`);
+        continue;
+      }
       const inspectJson = await inspectNetwork(network);
       core2.debug(`Network ${network} inspect: ${JSON.stringify(inspectJson, null, 2)}`);
       if (inspectJson[0]?.Name?.startsWith("github")) {
