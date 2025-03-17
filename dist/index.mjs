@@ -17428,12 +17428,12 @@ var require_lib = __commonJS({
             throw new Error("Client has already been disposed.");
           }
           const parsedUrl = new URL(requestUrl);
-          let info2 = this._prepareRequest(verb, parsedUrl, headers);
+          let info3 = this._prepareRequest(verb, parsedUrl, headers);
           const maxTries = this._allowRetries && RetryableHttpVerbs.includes(verb) ? this._maxRetries + 1 : 1;
           let numTries = 0;
           let response;
           do {
-            response = yield this.requestRaw(info2, data);
+            response = yield this.requestRaw(info3, data);
             if (response && response.message && response.message.statusCode === HttpCodes.Unauthorized) {
               let authenticationHandler;
               for (const handler of this.handlers) {
@@ -17443,7 +17443,7 @@ var require_lib = __commonJS({
                 }
               }
               if (authenticationHandler) {
-                return authenticationHandler.handleAuthentication(this, info2, data);
+                return authenticationHandler.handleAuthentication(this, info3, data);
               } else {
                 return response;
               }
@@ -17466,8 +17466,8 @@ var require_lib = __commonJS({
                   }
                 }
               }
-              info2 = this._prepareRequest(verb, parsedRedirectUrl, headers);
-              response = yield this.requestRaw(info2, data);
+              info3 = this._prepareRequest(verb, parsedRedirectUrl, headers);
+              response = yield this.requestRaw(info3, data);
               redirectsRemaining--;
             }
             if (!response.message.statusCode || !HttpResponseRetryCodes.includes(response.message.statusCode)) {
@@ -17496,7 +17496,7 @@ var require_lib = __commonJS({
        * @param info
        * @param data
        */
-      requestRaw(info2, data) {
+      requestRaw(info3, data) {
         return __awaiter(this, void 0, void 0, function* () {
           return new Promise((resolve, reject) => {
             function callbackForResult(err, res) {
@@ -17508,7 +17508,7 @@ var require_lib = __commonJS({
                 resolve(res);
               }
             }
-            this.requestRawWithCallback(info2, data, callbackForResult);
+            this.requestRawWithCallback(info3, data, callbackForResult);
           });
         });
       }
@@ -17518,12 +17518,12 @@ var require_lib = __commonJS({
        * @param data
        * @param onResult
        */
-      requestRawWithCallback(info2, data, onResult) {
+      requestRawWithCallback(info3, data, onResult) {
         if (typeof data === "string") {
-          if (!info2.options.headers) {
-            info2.options.headers = {};
+          if (!info3.options.headers) {
+            info3.options.headers = {};
           }
-          info2.options.headers["Content-Length"] = Buffer.byteLength(data, "utf8");
+          info3.options.headers["Content-Length"] = Buffer.byteLength(data, "utf8");
         }
         let callbackCalled = false;
         function handleResult(err, res) {
@@ -17532,7 +17532,7 @@ var require_lib = __commonJS({
             onResult(err, res);
           }
         }
-        const req = info2.httpModule.request(info2.options, (msg) => {
+        const req = info3.httpModule.request(info3.options, (msg) => {
           const res = new HttpClientResponse(msg);
           handleResult(void 0, res);
         });
@@ -17544,7 +17544,7 @@ var require_lib = __commonJS({
           if (socket) {
             socket.end();
           }
-          handleResult(new Error(`Request timeout: ${info2.options.path}`));
+          handleResult(new Error(`Request timeout: ${info3.options.path}`));
         });
         req.on("error", function(err) {
           handleResult(err);
@@ -17580,27 +17580,27 @@ var require_lib = __commonJS({
         return this._getProxyAgentDispatcher(parsedUrl, proxyUrl);
       }
       _prepareRequest(method, requestUrl, headers) {
-        const info2 = {};
-        info2.parsedUrl = requestUrl;
-        const usingSsl = info2.parsedUrl.protocol === "https:";
-        info2.httpModule = usingSsl ? https : http;
+        const info3 = {};
+        info3.parsedUrl = requestUrl;
+        const usingSsl = info3.parsedUrl.protocol === "https:";
+        info3.httpModule = usingSsl ? https : http;
         const defaultPort = usingSsl ? 443 : 80;
-        info2.options = {};
-        info2.options.host = info2.parsedUrl.hostname;
-        info2.options.port = info2.parsedUrl.port ? parseInt(info2.parsedUrl.port) : defaultPort;
-        info2.options.path = (info2.parsedUrl.pathname || "") + (info2.parsedUrl.search || "");
-        info2.options.method = method;
-        info2.options.headers = this._mergeHeaders(headers);
+        info3.options = {};
+        info3.options.host = info3.parsedUrl.hostname;
+        info3.options.port = info3.parsedUrl.port ? parseInt(info3.parsedUrl.port) : defaultPort;
+        info3.options.path = (info3.parsedUrl.pathname || "") + (info3.parsedUrl.search || "");
+        info3.options.method = method;
+        info3.options.headers = this._mergeHeaders(headers);
         if (this.userAgent != null) {
-          info2.options.headers["user-agent"] = this.userAgent;
+          info3.options.headers["user-agent"] = this.userAgent;
         }
-        info2.options.agent = this._getAgent(info2.parsedUrl);
+        info3.options.agent = this._getAgent(info3.parsedUrl);
         if (this.handlers) {
           for (const handler of this.handlers) {
-            handler.prepareRequest(info2.options);
+            handler.prepareRequest(info3.options);
           }
         }
-        return info2;
+        return info3;
       }
       _mergeHeaders(headers) {
         if (this.requestOptions && this.requestOptions.headers) {
@@ -19286,7 +19286,7 @@ var require_exec = __commonJS({
     exports.getExecOutput = exports.exec = void 0;
     var string_decoder_1 = __require("string_decoder");
     var tr = __importStar(require_toolrunner());
-    function exec6(commandLine, args, options) {
+    function exec8(commandLine, args, options) {
       return __awaiter(this, void 0, void 0, function* () {
         const commandArgs = tr.argStringToArray(commandLine);
         if (commandArgs.length === 0) {
@@ -19298,7 +19298,7 @@ var require_exec = __commonJS({
         return runner.exec();
       });
     }
-    exports.exec = exec6;
+    exports.exec = exec8;
     function getExecOutput4(commandLine, args, options) {
       var _a, _b;
       return __awaiter(this, void 0, void 0, function* () {
@@ -19321,7 +19321,7 @@ var require_exec = __commonJS({
           }
         };
         const listeners = Object.assign(Object.assign({}, options === null || options === void 0 ? void 0 : options.listeners), { stdout: stdOutListener, stderr: stdErrListener });
-        const exitCode = yield exec6(commandLine, args, Object.assign(Object.assign({}, options), { listeners }));
+        const exitCode = yield exec8(commandLine, args, Object.assign(Object.assign({}, options), { listeners }));
         stdout += stdoutDecoder.end();
         stderr += stderrDecoder.end();
         return {
@@ -19404,12 +19404,12 @@ var require_platform = __commonJS({
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.getDetails = exports.isLinux = exports.isMacOS = exports.isWindows = exports.arch = exports.platform = void 0;
     var os_1 = __importDefault(__require("os"));
-    var exec6 = __importStar(require_exec());
+    var exec8 = __importStar(require_exec());
     var getWindowsInfo = () => __awaiter(void 0, void 0, void 0, function* () {
-      const { stdout: version } = yield exec6.getExecOutput('powershell -command "(Get-CimInstance -ClassName Win32_OperatingSystem).Version"', void 0, {
+      const { stdout: version } = yield exec8.getExecOutput('powershell -command "(Get-CimInstance -ClassName Win32_OperatingSystem).Version"', void 0, {
         silent: true
       });
-      const { stdout: name } = yield exec6.getExecOutput('powershell -command "(Get-CimInstance -ClassName Win32_OperatingSystem).Caption"', void 0, {
+      const { stdout: name } = yield exec8.getExecOutput('powershell -command "(Get-CimInstance -ClassName Win32_OperatingSystem).Caption"', void 0, {
         silent: true
       });
       return {
@@ -19419,7 +19419,7 @@ var require_platform = __commonJS({
     });
     var getMacOsInfo = () => __awaiter(void 0, void 0, void 0, function* () {
       var _a, _b, _c, _d;
-      const { stdout } = yield exec6.getExecOutput("sw_vers", void 0, {
+      const { stdout } = yield exec8.getExecOutput("sw_vers", void 0, {
         silent: true
       });
       const version = (_b = (_a = stdout.match(/ProductVersion:\s*(.+)/)) === null || _a === void 0 ? void 0 : _a[1]) !== null && _b !== void 0 ? _b : "";
@@ -19430,7 +19430,7 @@ var require_platform = __commonJS({
       };
     });
     var getLinuxInfo = () => __awaiter(void 0, void 0, void 0, function* () {
-      const { stdout } = yield exec6.getExecOutput("lsb_release", ["-i", "-r", "-s"], {
+      const { stdout } = yield exec8.getExecOutput("lsb_release", ["-i", "-r", "-s"], {
         silent: true
       });
       const [name, version] = stdout.trim().split("\n");
@@ -19628,10 +19628,10 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
       (0, command_1.issueCommand)("notice", (0, utils_1.toCommandProperties)(properties), message instanceof Error ? message.toString() : message);
     }
     exports.notice = notice;
-    function info2(message) {
+    function info3(message) {
       process.stdout.write(message + os.EOL);
     }
-    exports.info = info2;
+    exports.info = info3;
     function startGroup(name) {
       (0, command_1.issue)("group", name);
     }
@@ -19694,7 +19694,7 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
 });
 
 // src/index.ts
-var core6 = __toESM(require_core(), 1);
+var core7 = __toESM(require_core(), 1);
 import process2 from "node:process";
 
 // src/docker/inspectNetwork.ts
@@ -19742,30 +19742,33 @@ var core2 = __toESM(require_core(), 1);
 var exec3 = __toESM(require_exec(), 1);
 async function createIpTableRule(portMapping) {
   const { host, container } = portMapping;
-  const code = await exec3.exec("nft", [
-    "add",
-    "rule",
-    "ip",
+  const code = await exec3.exec("iptables", [
+    "-t",
     "nat",
-    // Add the rule to the NAT table
+    // Create a rule in the NAT table
+    "-A",
     "PREROUTING",
-    // Add the rule to the PREROUTING chain (packets are processed before a routing decision)
+    // Append the rule to the PREROUTING chain
+    "-p",
     "tcp",
-    "daddr",
+    // Match TCP packets
+    "-d",
     host.ip,
-    // With a destination address of the host IP
-    "dport",
+    // Destination IP address
+    "--dport",
     String(host.port),
-    // And a destination port of the host port
-    "dnat",
-    "to",
+    // Destination port
+    "-j",
+    "DNAT",
+    // Destination NAT
+    "--to-destination",
     `${container.ip}:${container.port}`
-    // Redirect the packet to the container IP and port
+    // New destination IP and port
   ]);
   if (code !== 0) {
-    throw new Error(`Failed to create nftables rule: ${host.ip}:${host.port} -> ${container.ip}:${container.port}`);
+    throw new Error(`Failed to create iptables rule: ${host.ip}:${host.port} -> ${container.ip}:${container.port}`);
   }
-  core2.debug(`Created nftables rule: ${host.ip}:${host.port} -> ${container.ip}:${container.port}`);
+  core2.debug(`Created iptables rule: ${host.ip}:${host.port} -> ${container.ip}:${container.port}`);
 }
 
 // src/forward/discoverPorts.ts
@@ -19807,7 +19810,6 @@ async function discoverPorts(host, network) {
       }
       for (const port of hostPort) {
         core4.debug(`Discovered port mapping: ${host}:${port.HostPort} -> ${containerIp}:${containerPortNumber}`);
-        console.log(inspectedContainer.NetworkSettings.Ports);
         ports.push({
           host: {
             ip: host,
@@ -19824,79 +19826,91 @@ async function discoverPorts(host, network) {
   return ports;
 }
 
-// src/utils/errorHandler.ts
+// src/forward/ensureIptablesLegacy.ts
 var core5 = __toESM(require_core(), 1);
+var exec6 = __toESM(require_exec(), 1);
+async function ensureIpTablesLegacy() {
+  const code = await exec6.exec("update-alternatives", ["--set", "iptables", "/usr/sbin/iptables-legacy"]);
+  if (code !== 0) {
+    throw new Error("Failed to set iptables to legacy mode");
+  }
+  core5.info("iptables set to legacy mode");
+}
+
+// src/utils/errorHandler.ts
+var core6 = __toESM(require_core(), 1);
 function handleError(error2) {
-  core5.debug(String(error2));
+  core6.debug(String(error2));
   if (error2.message) {
-    core5.setFailed(error2.message);
+    core6.setFailed(error2.message);
   } else {
-    core5.setFailed("An unexpected error occurred. Please contact the package maintainer if the problem persists.");
+    core6.setFailed("An unexpected error occurred. Please contact the package maintainer if the problem persists.");
   }
 }
 
 // src/index.ts
 async function main() {
-  const STRICT = core6.getBooleanInput("strict", { required: false, trimWhitespace: true });
-  const HOST = core6.getInput("host", { required: false, trimWhitespace: true }) || "127.0.0.1";
-  const FORWARD_PORTS = core6.getBooleanInput("forward-ports", { required: false, trimWhitespace: true });
+  const STRICT = core7.getBooleanInput("strict", { required: false, trimWhitespace: true });
+  const HOST = core7.getInput("host", { required: false, trimWhitespace: true }) || "127.0.0.1";
+  const FORWARD_PORTS = core7.getBooleanInput("forward-ports", { required: false, trimWhitespace: true });
   try {
-    core6.debug(`Inputs: ${JSON.stringify({ STRICT, HOST, FORWARD_PORTS }, null, 2)}`);
-    core6.debug("Querying Docker networks...");
+    core7.debug(`Inputs: ${JSON.stringify({ STRICT, HOST, FORWARD_PORTS }, null, 2)}`);
+    core7.debug("Querying Docker networks...");
     const networksList = await queryDockerNetworks();
-    core6.info("All Docker networks: \n" + networksList.join("\n"));
+    core7.info("All Docker networks: \n" + networksList.join("\n"));
     let githubNetwork = null;
     let githubNetworkIp = null;
     for (const network of networksList) {
       if (!network.startsWith("github")) {
-        core6.debug(`Skipping network ${network}`);
+        core7.debug(`Skipping network ${network}`);
         continue;
       }
       const inspectJson = await inspectNetwork(network);
-      core6.debug(`Network ${network} inspect: ${JSON.stringify(inspectJson, null, 2)}`);
+      core7.debug(`Network ${network} inspect: ${JSON.stringify(inspectJson, null, 2)}`);
       if (inspectJson?.Name?.startsWith("github")) {
         githubNetworkIp = inspectJson?.IPAM?.Config?.[0]?.Gateway ?? null;
         githubNetwork = inspectJson;
         if (!githubNetworkIp) {
-          core6.debug(`Failed to get GitHub Actions network IP for network ${network}`);
+          core7.debug(`Failed to get GitHub Actions network IP for network ${network}`);
           throw new Error(`Failed to get GitHub Actions network IP for network ${network}`);
         }
-        core6.info(`Found GitHub Actions network: ${network} with IP: ${githubNetworkIp}`);
+        core7.info(`Found GitHub Actions network: ${network} with IP: ${githubNetworkIp}`);
         break;
       }
     }
     if (!githubNetworkIp && STRICT) {
-      core6.error("Strict mode: GitHub Actions network not found");
+      core7.error("Strict mode: GitHub Actions network not found");
       throw new Error("GitHub Actions network not found");
     } else if (!githubNetworkIp) {
-      core6.warning("GitHub Actions network not found");
+      core7.warning("GitHub Actions network not found");
       return;
     }
-    core6.setOutput("github-network-ip", githubNetworkIp);
-    core6.info('GitHub Actions network IP set to "github-network-ip"');
+    core7.setOutput("github-network-ip", githubNetworkIp);
+    core7.info('GitHub Actions network IP set to "github-network-ip"');
     if (!FORWARD_PORTS) {
-      core6.debug("Forwarding ports is disabled, skipping...");
+      core7.debug("Forwarding ports is disabled, skipping...");
       return;
     }
     if (!githubNetwork) {
-      core6.error("GitHub Actions network not found");
+      core7.error("GitHub Actions network not found");
       throw new Error("GitHub Actions network not found, cannot forward ports");
     }
-    core6.debug("Forwarding ports is enabled, setting up port forwarding...");
+    core7.debug("Forwarding ports is enabled, setting up port forwarding...");
     const discoveredPorts = await discoverPorts(HOST, githubNetwork);
     if (discoveredPorts.length === 0) {
-      core6.warning("No ports to forward");
+      core7.warning("No ports to forward");
       return;
     }
-    core6.info("Discovered port mappings: \n" + discoveredPorts.map((port) => JSON.stringify(port)).join("\n"));
-    core6.setOutput("port-mappings", JSON.stringify(discoveredPorts));
-    core6.info('Port mappings set to "port-mappings"');
-    core6.info("Creating iptables rules for port forwarding...");
+    core7.info("Discovered port mappings: \n" + discoveredPorts.map((port) => JSON.stringify(port)).join("\n"));
+    core7.setOutput("port-mappings", JSON.stringify(discoveredPorts));
+    core7.info('Port mappings set to "port-mappings"');
+    await ensureIpTablesLegacy();
+    core7.info("Creating iptables rules for port forwarding...");
     for (const port of discoveredPorts) {
-      core6.debug(`Forwarding port: ${port.host.ip}:${port.host.port} -> ${port.container.ip}:${port.container.port}`);
+      core7.debug(`Forwarding port: ${port.host.ip}:${port.host.port} -> ${port.container.ip}:${port.container.port}`);
       await createIpTableRule(port);
     }
-    core6.info("Port forwarding rules created");
+    core7.info("Port forwarding rules created");
   } catch (error2) {
     handleError(error2);
   }
