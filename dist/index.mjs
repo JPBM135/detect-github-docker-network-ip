@@ -19711,7 +19711,7 @@ function safeJsonParse(input) {
 
 // src/utils/dockerUtils.ts
 async function queryDockerNetworks() {
-  const allDockerNetworks = await exec.getExecOutput("docker", ["network", "ls", "--format", '"{{.Name}}"']);
+  const allDockerNetworks = await exec.getExecOutput("docker", ["network", "ls", "--format", "{{.Name}}"]);
   if (allDockerNetworks.exitCode !== 0) {
     throw new Error(`Failed to list all Docker networks: ${allDockerNetworks.stderr}`);
   }
