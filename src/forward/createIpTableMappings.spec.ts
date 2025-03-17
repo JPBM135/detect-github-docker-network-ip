@@ -33,7 +33,7 @@ describe('createIpTableRule', () => {
       '-t',
       'nat',
       '-A',
-      'PREROUTING',
+      'OUTPUT',
       '-p',
       'tcp',
       '-d',
