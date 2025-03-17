@@ -18,6 +18,11 @@ export async function main() {
     let githubNetworkIp = null;
 
     for (const network of networksList) {
+      if (!network.startsWith('github')) {
+        core.debug(`Skipping network ${network}`);
+        continue;
+      }
+
       const inspectJson = await inspectNetwork(network);
 
       core.debug(`Network ${network} inspect: ${JSON.stringify(inspectJson, null, 2)}`);
