@@ -54,7 +54,7 @@ describe('main', () => {
 
     await main();
 
-    expect(core.setFailed).toHaveBeenCalledWith('Failed to inspect network network1: error');
+    expect(core.setFailed).toHaveBeenCalledWith('Failed to inspect network github_network: error');
   });
 
   it('should fail in strict mode when GitHub Actions network is not found', async () => {

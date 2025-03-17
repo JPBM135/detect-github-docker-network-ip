@@ -10,10 +10,30 @@ inputs:
     required: false
     default: false
     type: boolean
+  forward-ports:
+    description: 'If the action should forward from the GitHub Actions Docker network to the host, ATTENTION: this will fail if the port is already in use'
+    required: false
+    default: false
+    type: boolean
+  host:
+    description: 'The host to forward the ports to'
+    required: false
+    default: '127.0.0.1'
+    type: string
 
 outputs:
   github-network-ip:
     description: 'The IP address of the GitHub Actions Docker network'
+  port-mappings:
+    description: |
+      The port mapping from the GitHub Actions Docker network to the host, JSON format.
+      Example:
+        - host:
+            port: 5432
+            host: '127.0.0.1'
+          container:
+            port: 80
+            host: '172.0.0.1'
 
 runs:
   using: 'node20'

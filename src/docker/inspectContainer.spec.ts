@@ -1,42 +1,37 @@
 import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import * as exec from '@actions/exec';
-import { inspectNetwork } from './inspectNetwork.js';
+import { inspectContainer } from './inspectContainer.js';
 import { safeJsonParse } from '../utils/safeJsonParse.js';
-import type { DockerNetwork } from '../types.js';
+import type { DockerContainer } from '../types.js';
 
 vi.mock('@actions/exec');
-
 const mockExec = exec.getExecOutput as Mock;
 
 const mockInspectOutput = JSON.stringify([
   {
-    Name: 'github_network',
-    IPAM: {
-      Config: [
-        {
-          Gateway: '192.168.1.1',
-        },
-      ],
+    Id: 'container_id',
+    Name: 'github_container',
+    State: {
+      Status: 'running',
     },
   },
 ]);
 
-const mockDockerNetwork: DockerNetwork[] = safeJsonParse<DockerNetwork[]>(mockInspectOutput) || [];
+const mockDockerContainer: DockerContainer[] = safeJsonParse<DockerContainer[]>(mockInspectOutput) || [];
 
-describe('inspectNetwork', () => {
+describe('inspectContainer', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it('should return the inspect JSON of a Docker network', async () => {
+  it('should return the inspect JSON of a Docker container', async () => {
     mockExec.mockResolvedValue({
       exitCode: 0,
       stdout: mockInspectOutput,
       stderr: '',
     });
-
-    const result = await inspectNetwork('github_network');
-    expect(result).toEqual(mockDockerNetwork[0]);
+    const result = await inspectContainer('container_id');
+    expect(result).toEqual(mockDockerContainer[0]);
   });
 
   it('should throw an error if the command fails', async () => {
@@ -45,8 +40,7 @@ describe('inspectNetwork', () => {
       stdout: '',
       stderr: 'error',
     });
-
-    await expect(inspectNetwork('github_network')).rejects.toThrow('Failed to inspect network github_network: error');
+    await expect(inspectContainer('container_id')).rejects.toThrow('Failed to inspect container container_id: error');
   });
 
   it('should throw an error if the JSON parsing fails', async () => {
@@ -55,9 +49,8 @@ describe('inspectNetwork', () => {
       stdout: 'invalid json',
       stderr: '',
     });
-
-    await expect(inspectNetwork('github_network')).rejects.toThrow(
-      'Failed to parse Docker network inspect JSON for network github_network',
+    await expect(inspectContainer('container_id')).rejects.toThrow(
+      'Failed to parse Docker container inspect JSON for container container_id',
     );
   });
 });
