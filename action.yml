@@ -36,5 +36,5 @@ outputs:
             host: '172.0.0.1'
 
 runs:
-  using: 'node20'
+  using: 'node24'
   main: 'dist/index.mjs'

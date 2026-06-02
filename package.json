@@ -30,7 +30,7 @@
   "devDependencies": {
     "@swc/cli": "^0.1.65",
     "@swc/core": "^1.11.9",
-    "@types/node": "^20.17.24",
+    "@types/node": "^24.0.0",
     "cpy-cli": "^5.0.0",
     "del-cli": "^5.1.0",
     "env-cmd": "^10.1.0",
@@ -43,7 +43,7 @@
     "vitest": "^3.0.8"
   },
   "engines": {
-    "node": ">=17.9.0"
+    "node": ">=24"
   },
   "packageManager": "yarn@4.7.0"
 }
